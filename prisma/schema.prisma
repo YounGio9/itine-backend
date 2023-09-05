@@ -20,7 +20,6 @@ model User {
   town        String        @db.VarChar(255)
   phoneNumber Int           @db.Integer
   role        RoleEnumType? @default(user)
-  isAdmin     Boolean       @default(false) @db.Boolean
 }
 
 enum RoleEnumType {
