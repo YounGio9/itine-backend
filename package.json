@@ -50,6 +50,6 @@
     "_moduleAliases": {
         "@resources/*": "resources/*",
         "@utils/*": "utils/*",
-        "@middleware": "middleware/*"
+        "@middleware/*": "middleware/*"
     }
 }
