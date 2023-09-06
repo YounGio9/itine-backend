@@ -4,6 +4,12 @@
 
 echo '🏗️👷 Styling, testing and building your project before committing'
 
+npm run format ||
+(
+    echo '\n 🤮🤢💩 Its a big shit bro! - Your styling looks disgusting. 🤢🤮
+             Prettier Check Failed. Run npm run format, add changes and try commit again. \n';
+    false;
+)
 # Check Prettier standards
 npm run check-format ||
 (
