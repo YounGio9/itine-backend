@@ -10,5 +10,26 @@
         "sourceType": "module",
         "project": ["./tsconfig.json"]
     },
-    "rules": {}
+    "rules": {},
+    "overrides": [
+        {
+            "files": ["*.ts", "*.js"],
+            "rules": {
+                "import/extensions": "off"
+            }
+        }
+    ],
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["@", "./src"],
+                    ["@utils", "./src/utils/"],
+                    ["@middleware", "./src/middleware/"],
+                    ["@resources", "./src/resources/"]
+                ],
+                "extensions": [".ts"]
+            }
+        }
+    }
 }

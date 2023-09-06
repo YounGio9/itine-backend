@@ -1,25 +1,24 @@
-import express, { Application } from 'express'
-import cors, { CorsRequest } from 'cors'
+import express, { type Application } from 'express'
+import cors, { type CorsRequest } from 'cors'
 import morgan from 'morgan'
 import helmet from 'helmet'
-import { Prisma } from '@prisma/client'
 import compression from 'compression'
-import Controller from '@utils/interfaces/controller.interface'
-import ErrorMiddleware from '@middleware/error.middleware'
+import type Controller from '@utils/interfaces/controller.interface'
+import errorMiddleware from '@middleware/error.middleware'
 
 class App {
     public express: Application
-    public port?: number
+    public port: number
 
     constructor(controllers: Controller[], port: number) {
         this.express = express()
-        this.port = port || 8000
-
+        this.port = port
         this.initializeMiddleware()
         this.initializeControllers(controllers)
         this.initializeErrorHandling()
     }
-    private initializeMiddleware = () => {
+
+    private readonly initializeMiddleware = (): void => {
         this.express.use(cors<CorsRequest>())
         this.express.use(compression())
         this.express.use(helmet())
@@ -28,12 +27,21 @@ class App {
         this.express.use(express.urlencoded({ extended: true }))
     }
 
-    private initializeControllers = (controllers: Controller[]) => {
+    private readonly initializeControllers = (controllers: Controller[]): void => {
         controllers.forEach((controller) => {
             this.express.use(controller.path, controller.router)
         })
     }
-    private initializeErrorHandling = () => {
-        this.express.use(ErrorMiddleware)
+
+    private readonly initializeErrorHandling = (): void => {
+        this.express.use(errorMiddleware)
+    }
+
+    public listen = (): void => {
+        this.express.listen(this.port, () => {
+            console.log(`Server listening on PORT ${this.port}`)
+        })
     }
 }
+
+export default App
