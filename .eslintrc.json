@@ -15,7 +15,9 @@
         {
             "files": ["*.ts", "*.js"],
             "rules": {
-                "import/extensions": "off"
+                "import/extensions": "off",
+                "@typescript-eslint/no-invalid-void-type": "off",
+                "@typescript-eslint/no-misused-promises": "off"
             }
         }
     ],
