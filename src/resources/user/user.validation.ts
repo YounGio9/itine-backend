@@ -20,4 +20,6 @@ const createUser = z.object({
 
 const updateUser = z.object({})
 
-export { createUser, updateUser }
+type createUserType = z.infer<typeof createUser.shape.body>
+
+export { createUser, updateUser, type createUserType }
