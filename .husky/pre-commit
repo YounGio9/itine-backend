@@ -18,6 +18,12 @@ npm run check-format ||
     false;
 )
 
+npm run lint:fix || (
+        echo '\n😤 I dont want bugs. Please provide a good code ! 😤 
+                ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.\n'
+        false; 
+)
+
 npm run lint || (
         echo '\n😤 I dont want bugs. Please provide a good code ! 😤 
                 ESLint Check Failed. Make the required changes listed above, add changes and try to commit again.\n'
