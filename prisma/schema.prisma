@@ -11,15 +11,15 @@ datasource db {
 }
 
 model User {
-  id          Int           @id @default(autoincrement())
-  firstName   String        @db.VarChar(255)
-  lastName    String        @db.VarChar(255)
-  email       String        @unique @db.VarChar(255)
+  id          Int          @id @default(autoincrement())
+  firstName   String       @db.VarChar(255)
+  lastName    String       @db.VarChar(255)
+  email       String       @unique @db.VarChar(255)
   password    String
-  country     String        @db.VarChar(255)
-  town        String        @db.VarChar(255)
-  phoneNumber Int           @db.Integer
-  role        RoleEnumType? @default(user)
+  country     String       @db.VarChar(255)
+  town        String       @db.VarChar(255)
+  phoneNumber Int          @db.Integer
+  role        RoleEnumType @default(user)
 }
 
 enum RoleEnumType {
