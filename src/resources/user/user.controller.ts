@@ -4,8 +4,8 @@ import type { Request, Response, NextFunction } from 'express'
 import { Router } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import HttpException from '@utils/exceptions/http.exception'
+import UserService from '@resources/user/user.service'
 import { createUser } from './user.validation'
-import UserService from './user.service'
 
 class UserController implements Controller {
     public path = '/users'
@@ -18,20 +18,35 @@ class UserController implements Controller {
 
     private initializeRoutes(): any {
         this.router.post(`${this.path}`, zodValidator(createUser), this.create)
+        this.router.get(`${this.path}`, this.getUsers)
     }
 
     // eslint-disable-next-line consistent-return
-    private async create(
+    private readonly create = async (
         req: Request,
         res: Response,
         next: NextFunction,
-    ): Promise<Response | void> {
+    ): Promise<Response | void> => {
         try {
             const user = await this.UserService.create(req.body)
 
             return res.status(201).json(jsonResponse('User created successfully', true, user))
         } catch (error) {
-            next(new HttpException(400, 'User creation failed'))
+            next(new HttpException(400, 'User creation failed e'))
+        }
+    }
+
+    private readonly getUsers = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const users = await this.UserService.getAllUsers()
+
+            return res.status(201).json(jsonResponse('User created successfully', true, users))
+        } catch (error) {
+            next(new HttpException(400, 'Cant retrieve users'))
         }
     }
 }
