@@ -18,7 +18,17 @@ class UserService {
 
             return user
         } catch (error) {
-            throw new Error('Unable to create post')
+            throw new Error('Unable to create User')
+        }
+    }
+
+    public async getAllUsers(): Promise<User[]> {
+        try {
+            const users = await this.user.findMany()
+
+            return users
+        } catch (error) {
+            throw new Error('Unable to find Users')
         }
     }
 }
