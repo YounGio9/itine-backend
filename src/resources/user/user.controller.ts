@@ -5,6 +5,7 @@ import { Router } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import HttpException from '@utils/exceptions/http.exception'
 import UserService from '@resources/user/user.service'
+import verifyJwt from '@middleware/verifyJwt.middleware'
 import { createUser } from './user.validation'
 
 class UserController implements Controller {
@@ -18,7 +19,7 @@ class UserController implements Controller {
 
     private initializeRoutes(): any {
         this.router.post(`${this.path}`, zodValidator(createUser), this.create)
-        this.router.get(`${this.path}`, this.getUsers)
+        this.router.get(`${this.path}`, verifyJwt, this.getUsers)
     }
 
     // eslint-disable-next-line consistent-return
@@ -32,7 +33,7 @@ class UserController implements Controller {
 
             return res.status(201).json(jsonResponse('User created successfully', true, user))
         } catch (error) {
-            next(new HttpException(400, 'User creation failed e'))
+            next(new HttpException(400, 'User creation failed'))
         }
     }
 
@@ -44,7 +45,7 @@ class UserController implements Controller {
         try {
             const users = await this.UserService.getAllUsers()
 
-            return res.status(201).json(jsonResponse('User created successfully', true, users))
+            return res.status(200).json(jsonResponse('Users retrieved successfully', true, users))
         } catch (error) {
             next(new HttpException(400, 'Cant retrieve users'))
         }
