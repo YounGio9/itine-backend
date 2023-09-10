@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node dist/server.js",
         "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
-        "build": "rimraf dist && tsc",
+        "build": "rimraf dist && npm run tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "npx eslint './src/**/*.{js,ts}'",
         "lint:fix": "npx eslint --fix './src/**/*.{js,ts}'",
@@ -14,7 +14,8 @@
         "check-types": "tsc --pretty --noEmit",
         "check-format": "prettier --check .",
         "check-lint": "eslint . --ext ts --ext js",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "tsc": "npx tsc"
     },
     "keywords": [],
     "engines": {
