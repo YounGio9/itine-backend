@@ -19,6 +19,7 @@ class AuthController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/register`, zodValidator(createUser), this.register)
         this.router.post(`${this.path}/login`, zodValidator(login), this.login)
+        this.router.get(`${this.path}/refresh`, this.refresh)
     }
 
     private readonly register = async (
@@ -49,6 +50,23 @@ class AuthController implements Controller {
                 .status(200)
                 .json(jsonResponse('User logged successfully', true, { accessToken }))
         } catch (error: any) {
+            next(error)
+        }
+    }
+
+    private readonly refresh = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const accessToken = await this.AuthService.refreshToken(req.cookies)
+            return res.status(200).json({ accessToken })
+        } catch (error: any) {
+            if ([401, 403].includes(error.status)) {
+                return res.sendStatus(error.status)
+            }
+
             next(error)
         }
     }
