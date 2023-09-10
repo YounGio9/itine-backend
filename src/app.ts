@@ -5,6 +5,7 @@ import helmet from 'helmet'
 import compression from 'compression'
 import type Controller from '@utils/interfaces/controller.interface'
 import errorMiddleware from '@middleware/error.middleware'
+import cookieParser from 'cookie-parser'
 
 class App {
     public express: Application
@@ -25,6 +26,7 @@ class App {
         this.express.use(morgan('dev'))
         this.express.use(express.json({ limit: '50mb' }))
         this.express.use(express.urlencoded({ extended: true }))
+        this.express.use(cookieParser())
     }
 
     private readonly initializeControllers = (controllers: Controller[]): void => {
