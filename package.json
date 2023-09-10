@@ -2,11 +2,11 @@
     "name": "first-node-ts-project",
     "version": "1.0.0",
     "description": "",
-    "main": "src/server.js",
+    "main": "src/server.ts",
     "scripts": {
         "start": "node dist/server.js",
         "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
-        "build": "rimraf dist && npx tsc",
+        "build": "rimraf dist && tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "npx eslint './src/**/*.{js,ts}'",
         "lint:fix": "npx eslint --fix './src/**/*.{js,ts}'",
