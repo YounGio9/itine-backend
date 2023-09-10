@@ -6,6 +6,9 @@ import compression from 'compression'
 import type Controller from '@utils/interfaces/controller.interface'
 import errorMiddleware from '@middleware/error.middleware'
 import cookieParser from 'cookie-parser'
+import credentials from '@middleware/credentials.middleware'
+import appOrigins from './config/origins'
+import logger from '@utils/logger.util'
 
 class App {
     public express: Application
@@ -20,7 +23,12 @@ class App {
     }
 
     private readonly initializeMiddleware = (): void => {
-        this.express.use(cors<CorsRequest>())
+        this.express.use(credentials)
+        this.express.use(
+            cors<CorsRequest>({
+                origin: appOrigins,
+            }),
+        )
         this.express.use(compression())
         this.express.use(helmet())
         this.express.use(morgan('dev'))
@@ -41,7 +49,7 @@ class App {
 
     public listen = (): void => {
         this.express.listen(this.port, () => {
-            console.log(`Server listening on PORT ${this.port}`)
+            logger.info(`Server listening on PORT ${this.port}`)
         })
     }
 }

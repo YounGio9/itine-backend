@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import type { Request, Response, NextFunction } from 'express'
 import 'dotenv/config'
+import logger from '@utils/logger.util'
 
 const verifyJwt = (
     req: Request & { user?: string },
@@ -10,11 +11,12 @@ const verifyJwt = (
     const token = req.headers.authorization?.split(' ')[1]
 
     if (token == null) {
-        res.sendStatus(401)
+        return res.sendStatus(401)
     }
 
+    logger.info(token)
     jwt.verify(
-        token!,
+        token,
         process.env.ACCESS_TOKEN_SECRET!,
 
         (err, decoded: any) => {

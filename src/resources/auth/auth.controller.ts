@@ -5,8 +5,10 @@ import type { Request, Response, NextFunction } from 'express'
 import HttpException from '@utils/exceptions/http.exception'
 import jsonResponse from '@utils/jsonResponse'
 import { createUser } from '@resources/user/user.validation'
-import login from './auth.validation'
+import type User from '@resources/user/user.interface'
+import verifyJwt from '@middleware/verifyJwt.middleware'
 import AuthService from './auth.service'
+import login from './auth.validation'
 
 class AuthController implements Controller {
     public path = '/auth'
@@ -19,6 +21,7 @@ class AuthController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/register`, zodValidator(createUser), this.register)
         this.router.post(`${this.path}/login`, zodValidator(login), this.login)
+        this.router.get(`${this.path}/profile`, verifyJwt, this.getUserProfile)
         this.router.get(`${this.path}/refresh`, this.refresh)
     }
 
@@ -67,6 +70,20 @@ class AuthController implements Controller {
                 return res.sendStatus(error.status)
             }
 
+            next(error)
+        }
+    }
+
+    private readonly getUserProfile = async (
+        req: Request & { user?: string },
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const user = (await this.AuthService.getProfile(req.user as string)) as User
+
+            return res.status(200).json({ ...user, password: undefined, id: undefined })
+        } catch (error: any) {
             next(error)
         }
     }

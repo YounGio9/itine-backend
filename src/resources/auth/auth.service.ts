@@ -2,6 +2,7 @@ import type User from '@resources/user/user.interface'
 import UserService from '@resources/user/user.service'
 import { hashPassword, isValidPassword } from '@utils/bcrypt.util'
 import HttpException from '@utils/exceptions/http.exception'
+import logger from '@utils/logger.util'
 import jwt from 'jsonwebtoken'
 
 class AuthService {
@@ -57,6 +58,18 @@ class AuthService {
         return newAccessToken
     }
 
+    public getProfile = async (email: string): Promise<Omit<User, 'password'> | null> => {
+        try {
+            console.log(email)
+            const user = await this.UserService.getByEmail(email)
+
+            return user
+        } catch (error) {
+            logger.info(error)
+            throw new HttpException(403, 'Cant find user infos')
+        }
+    }
+
     public login = async ({
         email,
         password,
@@ -91,6 +104,8 @@ class AuthService {
 
             return { accessToken, refreshToken }
         } catch (err) {
+            logger.info(err)
+
             throw new HttpException(400, `User login request failed`)
         }
     }
