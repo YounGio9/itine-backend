@@ -3,7 +3,7 @@
     "name": "first-node-ts-project",
     "version": "1.0.0",
     "description": "",
-    "main": "src/server.ts",
+    "main": "src/server.js",
     "scripts": {
         "start": "node dist/server.js",
         "dev": "tsc-watch --onSuccess \"node ./dist/server.js\"",
