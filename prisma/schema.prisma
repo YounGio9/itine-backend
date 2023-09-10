@@ -20,7 +20,7 @@ model User {
   town         String       @db.VarChar(255)
   phoneNumber  Int          @db.Integer
   role         RoleEnumType @default(user)
-  refreshToken String?      @db.VarChar(255)
+  refreshToken String?      @unique @db.VarChar(255)
 }
 
 enum RoleEnumType {
