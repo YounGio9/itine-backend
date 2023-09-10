@@ -2,7 +2,7 @@ import type User from '@resources/user/user.interface'
 import UserService from '@resources/user/user.service'
 import { hashPassword, isValidPassword } from '@utils/bcrypt.util'
 import HttpException from '@utils/exceptions/http.exception'
-import logger from '@utils/logger.util'
+import logger from '@/config/logger'
 import jwt from 'jsonwebtoken'
 
 class AuthService {

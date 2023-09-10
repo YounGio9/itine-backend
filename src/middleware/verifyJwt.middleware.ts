@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import type { Request, Response, NextFunction } from 'express'
 import 'dotenv/config'
-import logger from '@utils/logger.util'
+import logger from '@/config/logger'
 
 const verifyJwt = (
     req: Request & { user?: string },

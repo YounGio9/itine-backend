@@ -7,8 +7,8 @@ import type Controller from '@utils/interfaces/controller.interface'
 import errorMiddleware from '@middleware/error.middleware'
 import cookieParser from 'cookie-parser'
 import credentials from '@middleware/credentials.middleware'
+import logger from './config/logger'
 import appOrigins from './config/origins'
-import logger from '@utils/logger.util'
 
 class App {
     public express: Application
