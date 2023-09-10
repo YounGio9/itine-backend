@@ -31,8 +31,6 @@ class AuthService {
 
         const refreshToken = cookies.jwt
 
-        console.log(refreshToken)
-
         const foundUser = await this.UserService.getByRefreshToken(refreshToken)
 
         if (foundUser == null) {
@@ -60,7 +58,6 @@ class AuthService {
 
     public getProfile = async (email: string): Promise<Omit<User, 'password'> | null> => {
         try {
-            console.log(email)
             const user = await this.UserService.getByEmail(email)
 
             return user
