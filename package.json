@@ -1,4 +1,5 @@
 {
+    "type": "module",
     "name": "first-node-ts-project",
     "version": "1.0.0",
     "description": "",
