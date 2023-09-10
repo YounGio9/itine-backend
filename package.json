@@ -17,6 +17,9 @@
         "format": "prettier --write ."
     },
     "keywords": [],
+    "engines": {
+        "node": ">=16.13"
+    },
     "author": "Giovani de SOUZA",
     "license": "ISC",
     "devDependencies": {
