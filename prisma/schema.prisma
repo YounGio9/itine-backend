@@ -29,7 +29,7 @@ enum RoleEnumType {
 }
 
 model Message {
-  id         Int    @id @default(autoincrement())
+  id         Int    @id @unique @default(autoincrement())
   senderMail String
   senderName String
   subject    String
