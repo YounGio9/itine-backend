@@ -15,7 +15,8 @@
         "check-format": "prettier --check .",
         "check-lint": "eslint . --ext ts --ext js",
         "format": "prettier --write .",
-        "tsc": "tsc"
+        "tsc": "tsc",
+        "prisma:migrate": "prisma migrate dev --name init"
     },
     "keywords": [],
     "engines": {
