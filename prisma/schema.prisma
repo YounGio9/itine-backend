@@ -27,3 +27,11 @@ enum RoleEnumType {
   user
   admin
 }
+
+model Message {
+  id         Int    @id @default(autoincrement())
+  senderMail String
+  senderName String
+  subject    String
+  body       String @db.VarChar(255)
+}
