@@ -25,35 +25,45 @@ class AuthService {
     }
 
     public refreshToken = async (cookies: Record<string, any>): Promise<string> => {
-        if (!cookies.jwt) {
-            throw new HttpException(401, 'Unauthorized')
-        }
-
-        const refreshToken = cookies.jwt
-
-        const foundUser = await this.UserService.getByRefreshToken(refreshToken)
-
-        if (foundUser == null) {
-            throw new HttpException(403, 'Forbidden')
-        }
-
-        let newAccessToken: string = ''
-
-        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!, (err: any, decoded: any) => {
-            if (err || foundUser.email !== decoded.email) {
-                throw new HttpException(403, 'Invalid token')
+        try {
+            logger.info(cookies, 'cookies')
+            if (!cookies.jwt) {
+                throw new HttpException(401, 'Unauthorized')
             }
 
-            const accessToken = jwt.sign(
-                { email: foundUser.email },
-                process.env.ACCESS_TOKEN_SECRET!,
-                { expiresIn: '30s' },
+            const refreshToken = cookies.jwt
+
+            const foundUser = await this.UserService.getByRefreshToken(refreshToken)
+
+            if (foundUser == null) {
+                throw new HttpException(403, 'Forbidden')
+            }
+
+            let newAccessToken: string = ''
+
+            jwt.verify(
+                refreshToken,
+                process.env.REFRESH_TOKEN_SECRET!,
+                (err: any, decoded: any) => {
+                    if (err || foundUser.email !== decoded.email) {
+                        throw new HttpException(403, 'Invalid token')
+                    }
+
+                    const accessToken = jwt.sign(
+                        { email: foundUser.email },
+                        process.env.ACCESS_TOKEN_SECRET!,
+                        { expiresIn: '30s' },
+                    )
+
+                    newAccessToken = accessToken
+                },
             )
 
-            newAccessToken = accessToken
-        })
-
-        return newAccessToken
+            return newAccessToken
+        } catch (err) {
+            logger.info(err)
+            throw new HttpException(401, 'Unauthorized')
+        }
     }
 
     public getProfile = async (email: string): Promise<Omit<User, 'password'> | null> => {
