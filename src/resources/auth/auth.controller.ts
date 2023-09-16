@@ -50,7 +50,7 @@ class AuthController implements Controller {
             res.cookie('jwt', refreshToken, {
                 httpOnly: true,
                 sameSite: 'none',
-                secure: true,
+                secure: JSON.parse(process.env.COOKIE_SECURE!) as boolean,
                 maxAge: 24 * 60 * 60 * 1000,
             })
 
