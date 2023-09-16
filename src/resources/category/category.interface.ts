@@ -1,7 +1,7 @@
 import type { z } from 'zod'
 import type { createCategory } from './category.validation'
 
-type Category = z.infer<typeof createCategory.shape.body> & {
+type Category = Omit<z.infer<typeof createCategory.shape.body>, 'image'> & {
     id: number
 }
 
