@@ -2,10 +2,16 @@ import { z } from 'zod'
 
 const createProduct = z.object({
     body: z.object({
-        senderMail: z.string().email('Please enter a valid email address'),
-        senderName: z.string(),
-        subject: z.string(),
-        body: z.string(),
+        name: z.string(),
+        cover: z.string(),
+        description: z.string(),
+        price: z.number(),
+        images: z.array(z.string()),
+        categories: z.array(z.string()),
+        sizes: z.array(z.string()),
+        colors: z.array(z.string()),
+        availableQuantity: z.number(),
+        soldOut: z.boolean(),
     }),
 })
 
