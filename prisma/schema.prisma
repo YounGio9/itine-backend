@@ -35,3 +35,39 @@ model Message {
   subject    String
   body       String @db.VarChar(255)
 }
+
+model Product {
+  id                Int        @id @unique @default(autoincrement())
+  name              String
+  cover             String
+  description       String     @db.Text()
+  price             BigInt
+  images            String[]
+  categories        Category[]
+  sizes             Size[]
+  colors            Color[]
+  availableQuantity Int
+  soldOut           Boolean
+}
+
+model Category {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  image     String
+  Product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Size {
+  id        Int     @id @default(autoincrement())
+  label     String  @unique
+  Product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
+
+model Color {
+  id        Int     @id @default(autoincrement())
+  code      String
+  Product   Product @relation(fields: [productId], references: [id])
+  productId Int
+}
