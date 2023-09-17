@@ -5,13 +5,19 @@ import UserController from '@resources/user/user.controller'
 import AuthController from '@resources/auth/auth.controller'
 import MessageController from '@resources/message/message.controller'
 import ProductController from '@resources/product/product.controller'
-
+import CategoryController from '@resources/category/category.controller'
 import App from './app'
 
 validateEnv()
 
 const app = new App(
-    [new UserController(), new AuthController(), new MessageController(), new ProductController()],
+    [
+        new UserController(),
+        new AuthController(),
+        new MessageController(),
+        new ProductController(),
+        new CategoryController(),
+    ],
     Number(process.env.PORT),
 )
 app.listen()
