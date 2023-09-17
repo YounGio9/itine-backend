@@ -39,7 +39,7 @@ model Message {
 model Product {
   id                Int        @id @unique @default(autoincrement())
   name              String
-  cover             String
+  cover             Int
   description       String     @db.Text()
   price             Int
   images            String[]
@@ -60,14 +60,14 @@ model Category {
 
 model Size {
   id        Int     @id @default(autoincrement())
-  label     String  @unique
+  label     String
   Product   Product @relation(fields: [productId], references: [id])
   productId Int
 }
 
 model Color {
   id        Int     @id @default(autoincrement())
-  code      String  @unique
+  code      String
   Product   Product @relation(fields: [productId], references: [id])
   productId Int
 }
