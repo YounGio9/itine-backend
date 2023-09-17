@@ -44,9 +44,10 @@ class ProductService {
                         },
                     },
                     categories: {
-                        createMany: {
-                            data: categories.map((name) => ({ name })),
-                        },
+                        connectOrCreate: categories.map((name) => ({
+                            create: { name },
+                            where: { name },
+                        })),
                     },
                 },
             })
@@ -66,7 +67,13 @@ class ProductService {
 
     public async getAllProducts(): Promise<Product[]> {
         try {
-            const products = await this.product.findMany()
+            const products = await this.product.findMany({
+                include: {
+                    categories: true,
+                    colors: true,
+                    sizes: true,
+                },
+            })
 
             return products.map((product) => this.serializeProduct(product))
         } catch (error) {
@@ -104,7 +111,7 @@ class ProductService {
     public serializeProduct(product: any): Product {
         return {
             ...product,
-            categories: product.colors,
+            categories: product.categories.map((category: any) => category.name),
             sizes: product.sizes.map((size: any) => size.label),
             colors: product.colors.map((color: any) => color.code),
         }
