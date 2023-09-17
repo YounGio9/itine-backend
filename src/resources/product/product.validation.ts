@@ -3,7 +3,7 @@ import { z } from 'zod'
 const createProduct = z.object({
     body: z.object({
         name: z.string(),
-        cover: z.string(),
+        cover: z.number(),
         description: z.string(),
         price: z.number(),
         images: z.array(z.string()),
