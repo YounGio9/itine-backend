@@ -4,6 +4,8 @@ const appOrigins = [
     'https://backend-dev-itine.onrender.com',
     'http://itine.fr',
     'http://www.itine.fr',
+    'https://www.itine.fr',
+    'https://itine.fr',
 ]
 
 export default appOrigins
