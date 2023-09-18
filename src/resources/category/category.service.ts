@@ -11,7 +11,9 @@ class CategoryService {
     public async create(payload: createCategoryType): Promise<Category> {
         try {
             const category = await this.category.create({
-                data: payload,
+                data: {
+                    ...payload,
+                },
             })
 
             return category

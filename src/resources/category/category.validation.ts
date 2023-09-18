@@ -4,7 +4,7 @@ const createCategory = z.object({
     body: z.object({
         name: z.string(),
         image: z.string().optional(),
-        productId: z.number(),
+        productId: z.number().optional(),
     }),
 })
 
