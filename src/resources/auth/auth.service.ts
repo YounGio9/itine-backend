@@ -60,9 +60,9 @@ class AuthService {
             )
 
             return newAccessToken
-        } catch (err) {
+        } catch (err: any) {
             logger.info(err)
-            throw new HttpException(401, 'Unauthorized')
+            throw new HttpException(401, err.message ?? 'Something went wrong')
         }
     }
 
@@ -110,10 +110,10 @@ class AuthService {
             await this.UserService.updateByEmail(email, { refreshToken })
 
             return { accessToken, refreshToken }
-        } catch (err) {
+        } catch (err: any) {
             logger.info(err)
 
-            throw new HttpException(400, `User login request failed`)
+            throw new HttpException(400, err.message ?? 'User login request failed')
         }
     }
 }
