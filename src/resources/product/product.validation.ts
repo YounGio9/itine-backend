@@ -15,8 +15,14 @@ const createProduct = z.object({
     }),
 })
 
+const deleteProduct = z.object({
+    params: z.object({
+        id: z.string(),
+    }),
+})
+
 const updateProduct = z.object({})
 
 type createProductType = z.infer<typeof createProduct.shape.body>
 
-export { createProduct, updateProduct, type createProductType }
+export { createProduct, deleteProduct, updateProduct, type createProductType }
