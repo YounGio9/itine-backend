@@ -108,6 +108,27 @@ class ProductService {
         }
     }
 
+    public async deleteById(id: number): Promise<Product | null> {
+        try {
+            logger.info(id, 'ID')
+            const product = await this.product.findUnique({ where: { id } })
+
+            if (product == null) return null
+            const deleted = await this.product.delete({
+                where: { id },
+                include: {
+                    categories: true,
+                    colors: true,
+                    sizes: true,
+                },
+            })
+            return this.serializeProduct(deleted)
+        } catch (error) {
+            logger.info(error)
+            throw new Error('Cant Delete product')
+        }
+    }
+
     public serializeProduct(product: any): Product {
         return {
             ...product,
