@@ -61,13 +61,13 @@ model Category {
 model Size {
   id        Int     @id @default(autoincrement())
   label     String
-  Product   Product @relation(fields: [productId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
 }
 
 model Color {
   id        Int     @id @default(autoincrement())
   code      String
-  Product   Product @relation(fields: [productId], references: [id])
+  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
 }
