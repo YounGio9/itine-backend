@@ -3,7 +3,7 @@ import { z } from 'zod'
 const createCategory = z.object({
     body: z.object({
         name: z.string(),
-        image: z.string().optional(),
+        image: z.string(),
         productId: z.number().optional(),
     }),
 })
