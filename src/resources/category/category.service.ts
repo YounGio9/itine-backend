@@ -1,5 +1,6 @@
 import prismaClient from '@utils/prisma'
 import logger from '@/config/logger'
+import cloudinary from '@utils/cloud/cloudinary.util'
 import type Category from './category.interface'
 import { type createCategoryType } from './category.validation'
 
@@ -10,9 +11,17 @@ class CategoryService {
      */
     public async create(payload: createCategoryType): Promise<Category> {
         try {
+            const categoryImage = payload.image
+            const uploadedResponse = await cloudinary.uploader.upload(categoryImage, {
+                upload_preset: 'ml_default',
+                folder: 'itine',
+            })
+
+            const imageUrl = uploadedResponse.url
             const category = await this.category.create({
                 data: {
                     ...payload,
+                    image: imageUrl,
                 },
             })
 
