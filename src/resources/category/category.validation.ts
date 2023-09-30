@@ -16,6 +16,12 @@ const updateCategory = z.object({
     }),
 })
 
+const deleteCategory = z.object({
+    params: z.object({
+        id: z.string(),
+    }),
+})
+
 type createCategoryType = z.infer<typeof createCategory.shape.body>
 
-export { createCategory, updateCategory, type createCategoryType }
+export { createCategory, deleteCategory, updateCategory, type createCategoryType }

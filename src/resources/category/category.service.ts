@@ -58,6 +58,22 @@ class CategoryService {
         }
     }
 
+    public async deleteById(id: number): Promise<Category | null> {
+        try {
+            logger.info(id, 'ID')
+            const category = await this.category.findUnique({ where: { id } })
+
+            if (category == null) return null
+            const deleted = await this.category.delete({
+                where: { id },
+            })
+            return deleted
+        } catch (error) {
+            logger.info(error)
+            throw new Error('Cant Delete category')
+        }
+    }
+
     public async updateByName(name: string, data: Partial<Category>): Promise<void> {
         try {
             await this.category.update({

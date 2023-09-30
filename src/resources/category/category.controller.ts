@@ -17,7 +17,8 @@ class CategoryController implements Controller {
 
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createCategory), this.create)
-        this.router.get(`${this.path}/`, verifyJwt, this.getCategories)
+        this.router.get(`${this.path}/`, verifyJwt, this.getAll)
+        this.router.delete(`${this.path}/:id`, verifyJwt, this.delete)
     }
 
     private readonly create = async (
@@ -36,7 +37,7 @@ class CategoryController implements Controller {
         }
     }
 
-    private readonly getCategories = async (
+    private readonly getAll = async (
         req: Request,
         res: Response,
         next: NextFunction,
@@ -47,6 +48,23 @@ class CategoryController implements Controller {
             return res
                 .status(200)
                 .json(jsonResponse('Categories retrieved successfully', true, categories))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    private readonly delete = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const { id } = req.params
+            const category = await this.CategoryService.deleteById(+id)
+            if (category == null) {
+                return res.status(400).json(jsonResponse("Category doesn't exist", false))
+            }
+            return res.status(200).json(jsonResponse('Category successfully deleted', true, id))
         } catch (error) {
             next(error)
         }
