@@ -12,14 +12,19 @@ class CityService {
      */
     public async create(payload: createCityType): Promise<City> {
         try {
+            const existedCity = await this.city.findUnique({ where: { name: payload.name } })
+
+            if (existedCity != null) {
+                throw new HttpException(200, 'City already exist')
+            }
             const city = await this.city.create({
                 data: payload,
             })
 
             return city
-        } catch (error) {
+        } catch (error: any) {
             logger.info(error)
-            throw new HttpException(400, 'Unable to create City')
+            throw new HttpException(error.status ?? 400, error.message)
         }
     }
 
@@ -55,6 +60,22 @@ class CityService {
         } catch (error) {
             logger.info(error)
             throw new Error('Cant find city')
+        }
+    }
+
+    public async updateById(name: string, id: number): Promise<City | null> {
+        try {
+            const city = await this.city.update({
+                where: { id },
+                data: {
+                    name,
+                },
+            })
+
+            return city
+        } catch (error) {
+            logger.info(error)
+            throw new Error('Cant update city')
         }
     }
 
