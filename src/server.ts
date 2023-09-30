@@ -3,6 +3,8 @@ import 'dotenv/config'
 import validateEnv from '@utils/validateEnv'
 import UserController from '@resources/user/user.controller'
 import AuthController from '@resources/auth/auth.controller'
+import SizeController from '@resources/size/size.controller'
+import ColorController from '@resources/color/color.controller'
 import MessageController from '@resources/message/message.controller'
 import ProductController from '@resources/product/product.controller'
 import CategoryController from '@resources/category/category.controller'
@@ -17,6 +19,8 @@ const app = new App(
         new MessageController(),
         new ProductController(),
         new CategoryController(),
+        new ColorController(),
+        new SizeController(),
     ],
     Number(process.env.PORT),
 )
