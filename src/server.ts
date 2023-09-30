@@ -8,6 +8,7 @@ import ColorController from '@resources/color/color.controller'
 import MessageController from '@resources/message/message.controller'
 import ProductController from '@resources/product/product.controller'
 import CategoryController from '@resources/category/category.controller'
+import CityController from '@resources/city/city.controller'
 import App from './app'
 
 validateEnv()
@@ -21,6 +22,7 @@ const app = new App(
         new CategoryController(),
         new ColorController(),
         new SizeController(),
+        new CityController(),
     ],
     Number(process.env.PORT),
 )
