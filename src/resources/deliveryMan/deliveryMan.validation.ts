@@ -8,7 +8,6 @@ const createDeliveryMan = z.object({
         country: z.string(),
         town: z.string(),
         email: z.string(),
-        body: z.string(),
         phoneNumber: z.string(),
         postalCode: z.string(),
         maritalStatus: z.enum(['single', 'married']),
@@ -25,5 +24,12 @@ const updateDeliveryManStatus = z.object({
 const updateDeliveryMan = z.object({})
 
 type createDeliveryManType = z.infer<typeof createDeliveryMan.shape.body>
+type updateDeliveryManStatusType = z.infer<typeof updateDeliveryManStatus.shape.body>
 
-export { createDeliveryMan, updateDeliveryMan, updateDeliveryManStatus, type createDeliveryManType }
+export {
+    createDeliveryMan,
+    updateDeliveryMan,
+    updateDeliveryManStatus,
+    type createDeliveryManType,
+    type updateDeliveryManStatusType,
+}
