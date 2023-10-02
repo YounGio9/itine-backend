@@ -82,15 +82,20 @@ model City {
 }
 
 model DeliveryMan {
-  id            Int      @id @default(autoincrement())
+  id            Int               @id @default(autoincrement())
   lastName      String
   firstName     String
   dateOfBirth   DateTime
   country       String
   town          String
-  email         String   @unique
+  email         String            @unique
   pnoneNumber   String
   postalCode    String
-  maritalStatus String
-  active        Boolean  @default(false)
+  maritalStatus MaritalStatusType
+  active        Boolean           @default(false)
+}
+
+enum MaritalStatusType {
+  single
+  married
 }
