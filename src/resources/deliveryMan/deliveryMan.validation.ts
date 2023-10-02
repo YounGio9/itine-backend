@@ -2,12 +2,12 @@ import { z } from 'zod'
 
 const createDeliveryMan = z.object({
     body: z.object({
-        lastName: z.string().email('Please enter a valid email address'),
+        lastName: z.string(),
         firstName: z.string(),
         dateOfBirth: z.string().datetime(),
         country: z.string(),
         town: z.string(),
-        email: z.string(),
+        email: z.string().email('Please enter a valid email address'),
         phoneNumber: z.string(),
         postalCode: z.string(),
         maritalStatus: z.enum(['single', 'married']),
