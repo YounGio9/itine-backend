@@ -29,11 +29,13 @@ enum RoleEnumType {
 }
 
 model Message {
-  id         Int    @id @unique @default(autoincrement())
+  id         Int      @id @unique @default(autoincrement())
   senderMail String
   senderName String
   subject    String
-  body       String @db.VarChar(255)
+  body       String   @db.VarChar(255)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Product {
@@ -48,6 +50,8 @@ model Product {
   colors            Color[]
   availableQuantity Int
   soldOut           Boolean
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 }
 
 model Category {
