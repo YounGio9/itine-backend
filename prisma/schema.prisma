@@ -89,7 +89,7 @@ model DeliveryMan {
   country       String
   town          String
   email         String            @unique
-  pnoneNumber   String
+  phoneNumber   String
   postalCode    String
   maritalStatus MaritalStatusType
   active        Boolean           @default(false)
