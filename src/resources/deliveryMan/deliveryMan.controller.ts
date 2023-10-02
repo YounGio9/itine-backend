@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import verifyJwt from '@middleware/verifyJwt.middleware'
 import DeliveryManService from './deliveryMan.service'
-import { createDeliveryMan, updateDeliveryMan } from './deliveryMan.validation'
+import { createDeliveryMan, updateDeliveryManStatus } from './deliveryMan.validation'
 
 class DeliveryManController implements Controller {
     public path = '/deliveryMen'
@@ -18,7 +18,11 @@ class DeliveryManController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createDeliveryMan), this.create)
         this.router.get(`${this.path}/`, verifyJwt, this.getDeliveryMen)
-        this.router.put(`${this.path}`, zodValidator(updateDeliveryMan), this.updateStatus)
+        this.router.post(
+            `${this.path}/changeStatus`,
+            zodValidator(updateDeliveryManStatus),
+            this.updateStatus,
+        )
     }
 
     private readonly create = async (
@@ -52,6 +56,7 @@ class DeliveryManController implements Controller {
             next(error)
         }
     }
+
     private readonly updateStatus = async (
         req: Request,
         res: Response,
