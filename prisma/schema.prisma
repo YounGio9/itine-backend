@@ -76,3 +76,17 @@ model City {
   id   Int    @id @default(autoincrement())
   name String @unique
 }
+
+model DeliveryMan {
+  id            Int      @id @default(autoincrement())
+  lastName      String
+  firstName     String
+  dateOfBirth   DateTime
+  country       String
+  town          String
+  email         String   @unique
+  pnoneNumber   String
+  postalCode    String
+  maritalStatus String
+  active        Boolean  @default(false)
+}
