@@ -82,17 +82,24 @@ model City {
 }
 
 model DeliveryMan {
-  id            Int               @id @default(autoincrement())
+  id            Int                   @id @default(autoincrement())
   lastName      String
   firstName     String
   dateOfBirth   DateTime
   country       String
   town          String
-  email         String            @unique
+  email         String                @unique
   phoneNumber   String
   postalCode    String
   maritalStatus MaritalStatusType
-  active        Boolean           @default(false)
+  status        deliveryManStatusType @default(unset)
+  password      String?
+}
+
+enum deliveryManStatusType {
+  unset
+  accepted
+  rejected
 }
 
 enum MaritalStatusType {
