@@ -59,7 +59,7 @@ class DeliveryManService {
                     id: payload.id,
                 },
                 data: {
-                    active: payload.active,
+                    status: payload.active ? 'accepted' : 'rejected',
                 },
             })
 
