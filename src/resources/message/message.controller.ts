@@ -22,7 +22,6 @@ class MessageController implements Controller {
         this.router.post(
             `${this.path}/reply`,
             zodValidator(replyMessage),
-            verifyJwt,
             this.sendMessageByAdmin,
         )
     }
