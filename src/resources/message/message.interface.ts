@@ -5,4 +5,9 @@ type Message = z.infer<typeof createMessage.shape.body> & {
     id: number
 }
 
-export default Message
+interface Chat {
+    user: string
+    messages: Message[]
+}
+
+export type { Message, Chat }
