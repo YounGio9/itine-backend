@@ -18,7 +18,7 @@ class MessageController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createMessage), this.create)
         this.router.get(`${this.path}/`, verifyJwt, this.getMessages)
-        this.router.get(`${this.path}/chats`, this.getChats)
+        this.router.get(`${this.path}/chats`, verifyJwt, this.getChats)
         this.router.post(
             `${this.path}/reply`,
             zodValidator(replyMessage),
