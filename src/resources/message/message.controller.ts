@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import verifyJwt from '@middleware/verifyJwt.middleware'
 import MessageService from './message.service'
-import { createMessage } from './message.validation'
+import { createMessage, replyMessage } from './message.validation'
 
 class MessageController implements Controller {
     public path = '/messages'
@@ -18,6 +18,13 @@ class MessageController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createMessage), this.create)
         this.router.get(`${this.path}/`, verifyJwt, this.getMessages)
+        this.router.get(`${this.path}/chats`, this.getChats)
+        this.router.post(
+            `${this.path}/reply`,
+            zodValidator(replyMessage),
+            verifyJwt,
+            this.sendMessageByAdmin,
+        )
     }
 
     private readonly create = async (
@@ -41,6 +48,38 @@ class MessageController implements Controller {
     ): Promise<Response | void> => {
         try {
             const messages = await this.MessageService.getAllMessages()
+
+            return res
+                .status(200)
+                .json(jsonResponse('Messages retrieved successfully', true, messages))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    private readonly getChats = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const messages = await this.MessageService.getChats()
+
+            return res
+                .status(200)
+                .json(jsonResponse('Messages retrieved successfully', true, messages))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    private readonly sendMessageByAdmin = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const messages = await this.MessageService.adminSendMessage(req.body)
 
             return res
                 .status(200)
