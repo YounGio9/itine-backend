@@ -21,11 +21,23 @@ model User {
   phoneNumber  Int          @db.Integer
   role         RoleEnumType @default(user)
   refreshToken String?      @unique @db.VarChar(255)
+  cart         CartItem[]
 }
 
 enum RoleEnumType {
   user
   admin
+}
+
+model CartItem {
+  id        Int     @id @unique @default(autoincrement())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  User      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  productId Int
+  quantity  Int
+  color     String
+  size      String
 }
 
 model Message {
@@ -52,6 +64,7 @@ model Product {
   soldOut           Boolean
   createdAt         DateTime   @default(now())
   updatedAt         DateTime   @updatedAt
+  CartItem          CartItem[]
 }
 
 model Category {

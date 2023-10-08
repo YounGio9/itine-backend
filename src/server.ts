@@ -11,6 +11,7 @@ import ProductController from '@resources/product/product.controller'
 import CategoryController from '@resources/category/category.controller'
 import DeliveryManController from '@resources/deliveryMan/deliveryMan.controller'
 import App from './app'
+import CartItemController from '@resources/cartItem/cartItem.controller'
 
 validateEnv()
 
@@ -25,6 +26,7 @@ const app = new App(
         new SizeController(),
         new CityController(),
         new DeliveryManController(),
+        new CartItemController(),
     ],
     Number(process.env.PORT),
 )

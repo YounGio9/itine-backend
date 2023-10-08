@@ -55,6 +55,15 @@ class UserService {
         }
     }
 
+    public async getById(id: number): Promise<User | null> {
+        try {
+            const user = await this.user.findUnique({ where: { id } })
+            return user
+        } catch (error) {
+            throw new Error('Cant find user')
+        }
+    }
+
     public async updateByEmail(email: string, data: Partial<User>): Promise<void> {
         try {
             await this.user.update({
