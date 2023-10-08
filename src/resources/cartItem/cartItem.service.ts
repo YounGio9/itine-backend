@@ -1,10 +1,10 @@
 import prismaClient from '@utils/prisma'
-import type CartItem from './cartItem.interface'
-import { type createCartItemType } from './cartItem.validation'
 import ProductService from '@resources/product/product.service'
 import UserService from '@resources/user/user.service'
 import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
+import { type createCartItemType } from './cartItem.validation'
+import type CartItem from './cartItem.interface'
 
 class CartItemService {
     private readonly cartItem = prismaClient.cartItem
@@ -86,7 +86,6 @@ class CartItemService {
                 },
             })
 
-            console.log(cartItems)
             return cartItems.map((item) => this.serializeCartItem(item))
         } catch (error) {
             logger.info(error)

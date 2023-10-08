@@ -4,9 +4,9 @@ import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import verifyJwt from '@middleware/verifyJwt.middleware'
+import logger from '@/config/logger'
 import CartItemService from './cartItem.service'
 import { createCartItem, getCartItem, updateCartItem } from './cartItem.validation'
-import logger from '@/config/logger'
 
 class CartItemController implements Controller {
     public path = '/cartItems'
@@ -60,7 +60,7 @@ class CartItemController implements Controller {
                 .status(200)
                 .json(jsonResponse('CartItems retrieved successfully', true, cartItems))
         } catch (error) {
-            console.log(error)
+            logger.info(error)
             next(error)
         }
     }
