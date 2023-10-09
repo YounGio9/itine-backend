@@ -17,7 +17,7 @@ class CategoryController implements Controller {
 
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createCategory), this.create)
-        this.router.get(`${this.path}/`, verifyJwt, this.getAll)
+        this.router.get(`${this.path}/`, this.getAll)
         this.router.delete(`${this.path}/:id`, verifyJwt, this.delete)
     }
 
