@@ -19,11 +19,7 @@ class MessageController implements Controller {
         this.router.post(`${this.path}/`, zodValidator(createMessage), this.create)
         this.router.get(`${this.path}/`, verifyJwt, this.getMessages)
         this.router.get(`${this.path}/chats`, verifyJwt, this.getChats)
-        this.router.post(
-            `${this.path}/reply`,
-            zodValidator(replyMessage),
-            this.sendMessageByAdmin,
-        )
+        this.router.post(`${this.path}/reply`, zodValidator(replyMessage), this.sendMessageByAdmin)
     }
 
     private readonly create = async (

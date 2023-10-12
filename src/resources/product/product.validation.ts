@@ -11,7 +11,9 @@ const createProduct = z.object({
         sizes: z.array(z.string()),
         colors: z.array(z.string()),
         availableQuantity: z.number(),
+        genders: z.array(z.enum(['man', 'woman', 'child'])),
         soldOut: z.boolean(),
+        cities: z.array(z.string()),
     }),
 })
 

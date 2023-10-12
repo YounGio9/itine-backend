@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id           Int          @id @default(autoincrement())
-  firstName    String       @db.VarChar(255)
-  lastName     String       @db.VarChar(255)
-  email        String       @unique @db.VarChar(255)
+  id           Int            @id @default(autoincrement())
+  firstName    String         @db.VarChar(255)
+  lastName     String         @db.VarChar(255)
+  email        String         @unique @db.VarChar(255)
   password     String
-  country      String       @db.VarChar(255)
-  town         String       @db.VarChar(255)
-  phoneNumber  Int          @db.Integer
-  role         RoleEnumType @default(user)
-  refreshToken String?      @unique @db.VarChar(255)
+  country      String         @db.VarChar(255)
+  town         String         @db.VarChar(255)
+  phoneNumber  Int            @db.Integer
+  role         RoleEnumType   @default(user)
+  refreshToken String?        @unique @db.VarChar(255)
   cart         CartItem[]
+  wishList     WishListItem[]
 }
 
 enum RoleEnumType {
@@ -51,10 +52,10 @@ model Message {
 }
 
 model Product {
-  id                Int        @id @unique @default(autoincrement())
+  id                Int              @id @unique @default(autoincrement())
   name              String
   cover             Int
-  description       String     @db.Text()
+  description       String           @db.Text()
   price             Int
   images            String[]
   categories        Category[]
@@ -62,9 +63,18 @@ model Product {
   colors            Color[]
   availableQuantity Int
   soldOut           Boolean
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
-  CartItem          CartItem[]
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  genders           GenderEnumType[]
+  cartItem          CartItem[]
+  wishListItem      WishListItem?
+  cities            String[]
+}
+
+enum GenderEnumType {
+  woman
+  man
+  child
 }
 
 model Category {
@@ -105,11 +115,11 @@ model DeliveryMan {
   phoneNumber   String
   postalCode    String
   maritalStatus MaritalStatusType
-  status        deliveryManStatusType @default(unset)
+  status        DeliveryManStatusType @default(unset)
   password      String?
 }
 
-enum deliveryManStatusType {
+enum DeliveryManStatusType {
   unset
   accepted
   rejected
@@ -118,4 +128,12 @@ enum deliveryManStatusType {
 enum MaritalStatusType {
   single
   married
+}
+
+model WishListItem {
+  id        Int     @id @default(autoincrement())
+  User      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int     @unique
 }
