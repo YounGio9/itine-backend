@@ -147,24 +147,26 @@ class ProductService {
                 )
             }
 
-            const existingCategories = (await this.categoryService.getAllCategories()).map(
-                (cat) => cat.name,
+            const existingCategories = (await this.categoryService.getAllCategories()).map((cat) =>
+                cat.name.toLowerCase(),
             )
 
-            if (category && !existingCategories.includes(category)) {
+            if (category && !existingCategories.includes(category.toLowerCase())) {
                 throw new HttpException(400, `Category ${category} doesn't exist`)
             }
 
             if (category) {
                 filteredProducts = products.filter((product) =>
-                    product.categories.includes(category),
+                    product.categories
+                        .map((cat) => cat.toLowerCase())
+                        .includes(category.toLowerCase()),
                 )
             }
 
             return filteredProducts
-        } catch (error) {
+        } catch (error: any) {
             logger.info(error)
-            throw new HttpException(400, 'Unable to find Products')
+            throw new HttpException(error.status ?? 400, error.message ?? 'Unable to find Products')
         }
     }
 

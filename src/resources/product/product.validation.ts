@@ -25,8 +25,8 @@ const deleteProduct = z.object({
 
 const getProducts = z.object({
     query: z.object({
-        category: z.string(),
-        gender: z.string(),
+        category: z.string().optional(),
+        gender: z.string().optional(),
     }),
 })
 
