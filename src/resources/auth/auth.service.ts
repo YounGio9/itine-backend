@@ -4,20 +4,23 @@ import { hashPassword, isValidPassword } from '@utils/bcrypt.util'
 import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
 import jwt from 'jsonwebtoken'
+import DeliveryManService from '@resources/deliveryMan/deliveryMan.service'
 
 class AuthService {
     private readonly UserService = new UserService()
+    private readonly DeliveryManService = new DeliveryManService()
 
     public register = async (payload: User): Promise<User> => {
         const retrievedUser = await this.UserService.getByEmail(payload.email)
-        if (retrievedUser != null) {
+        const retrievedDeliveryMan = await this.DeliveryManService.getByEmail(payload.email)
+        if (retrievedUser != null || retrievedDeliveryMan != null) {
             throw new HttpException(400, 'User already exists')
         }
 
         const hashedPassword = await hashPassword(payload.password)
 
         try {
-            const user = await new UserService().create({ ...payload, password: hashedPassword })
+            const user = await this.UserService.create({ ...payload, password: hashedPassword })
             return user
         } catch (error) {
             throw new Error('Cannot register user')
@@ -114,6 +117,40 @@ class AuthService {
             logger.info(err)
 
             throw new HttpException(400, err.message ?? 'User login request failed')
+        }
+    }
+
+    public loginMobile = async ({
+        email,
+        password,
+    }: {
+        email: string
+        password: string
+    }): Promise<{ accessToken: string }> => {
+        try {
+            const retrievedUser = await this.UserService.getByEmail(email)
+
+            const retrievedDeliveryMan = await this.DeliveryManService.getByEmail(email)
+
+            const user = retrievedDeliveryMan ?? retrievedUser
+
+            if (user == null) {
+                throw new HttpException(401, "User doesn't exist")
+            }
+
+            if (!(await isValidPassword(password, user.password ?? ''))) {
+                throw new HttpException(403, 'Invalid password')
+            }
+
+            const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET!, {
+                expiresIn: '365d',
+            })
+
+            return { accessToken }
+        } catch (err: any) {
+            logger.info(err)
+
+            throw new HttpException(err.status ?? 400, err.message ?? 'User login request failed')
         }
     }
 }

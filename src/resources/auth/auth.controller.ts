@@ -45,6 +45,14 @@ class AuthController implements Controller {
         next: NextFunction,
     ): Promise<Response | void> => {
         try {
+            const mobileKey = req.headers['mobile-api-key']
+            if (mobileKey && mobileKey === process.env.MOBILE_API_KEY) {
+                const { accessToken } = await this.AuthService.loginMobile(req.body)
+
+                return res
+                    .status(200)
+                    .json(jsonResponse('User logged successfully', true, { accessToken }))
+            }
             const { accessToken, refreshToken } = await this.AuthService.login(req.body)
 
             res.cookie('jwt', refreshToken, {
@@ -57,7 +65,7 @@ class AuthController implements Controller {
             return res
                 .status(200)
                 .json(jsonResponse('User logged successfully', true, { accessToken }))
-        } catch (error: any) {
+        } catch (error) {
             next(error)
         }
     }
