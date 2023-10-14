@@ -43,7 +43,14 @@ class CategoryController implements Controller {
         next: NextFunction,
     ): Promise<Response | void> => {
         try {
-            const categories = await this.CategoryService.getAllCategories()
+            const { gender } = req.query
+
+            let categories = []
+            if (gender) {
+                categories = await this.CategoryService.getCategoriesByGender(gender as any)
+            } else {
+                categories = await this.CategoryService.getAllCategories()
+            }
 
             return res
                 .status(200)
