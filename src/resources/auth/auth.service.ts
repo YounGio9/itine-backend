@@ -132,7 +132,8 @@ class AuthService {
 
             const retrievedDeliveryMan = await this.DeliveryManService.getByEmail(email)
 
-            const user = retrievedDeliveryMan ?? retrievedUser
+            // eslint-disable-next-line  @typescript-eslint/prefer-nullish-coalescing
+            const user = retrievedDeliveryMan || retrievedUser
 
             if (user == null) {
                 throw new HttpException(401, "User doesn't exist")

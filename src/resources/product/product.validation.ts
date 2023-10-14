@@ -23,8 +23,15 @@ const deleteProduct = z.object({
     }),
 })
 
+const getProducts = z.object({
+    query: z.object({
+        category: z.string(),
+        gender: z.string(),
+    }),
+})
+
 const updateProduct = z.object({})
 
 type createProductType = z.infer<typeof createProduct.shape.body>
 
-export { createProduct, deleteProduct, updateProduct, type createProductType }
+export { createProduct, getProducts, deleteProduct, updateProduct, type createProductType }

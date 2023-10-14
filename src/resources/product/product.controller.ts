@@ -4,7 +4,7 @@ import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import ProductService from './product.service'
-import { createProduct, deleteProduct } from './product.validation'
+import { createProduct, deleteProduct, getProducts } from './product.validation'
 
 class ProductController implements Controller {
     public path = '/products'
@@ -16,7 +16,7 @@ class ProductController implements Controller {
 
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createProduct), this.create)
-        this.router.get(`${this.path}/`, this.getProducts)
+        this.router.get(`${this.path}/`, zodValidator(getProducts), this.getProducts)
         this.router.delete(`${this.path}/:id`, zodValidator(deleteProduct), this.delete)
     }
 
@@ -40,7 +40,18 @@ class ProductController implements Controller {
         next: NextFunction,
     ): Promise<Response | void> => {
         try {
-            const products = await this.ProductService.getAllProducts()
+            const { category, gender } = req.query
+            let products = await this.ProductService.getAllProducts()
+            type queryType = string | undefined
+
+            // eslint-disable-next-line  @typescript-eslint/prefer-nullish-coalescing
+            if (category || gender) {
+                products = await this.ProductService.filterProducts(
+                    products,
+                    gender as queryType,
+                    category as queryType,
+                )
+            }
 
             return res
                 .status(200)

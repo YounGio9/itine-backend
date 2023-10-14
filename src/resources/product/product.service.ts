@@ -2,11 +2,13 @@ import prismaClient from '@utils/prisma'
 import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
 import cloudinary from '@utils/cloud/cloudinary.util'
+import CategoryService from '@resources/category/category.service'
 import type Product from './product.interface'
 import { type createProductType } from './product.validation'
 
 class ProductService {
     private readonly product = prismaClient.product
+    private readonly categoryService = new CategoryService()
 
     /**
      * Create a new product
@@ -126,6 +128,43 @@ class ProductService {
         } catch (error) {
             logger.info(error)
             throw new Error('Cant Delete product')
+        }
+    }
+
+    public async filterProducts(
+        products: Product[],
+        gender: string | undefined,
+        category: string | undefined,
+    ): Promise<Product[]> {
+        try {
+            let filteredProducts: Product[] = []
+            if (gender && !['man', 'woman', 'child'].includes(gender)) {
+                throw new HttpException(400, `Gender ${gender} doesn't exist`)
+            }
+            if (gender) {
+                filteredProducts = products.filter((product) =>
+                    product.genders.includes(gender as any),
+                )
+            }
+
+            const existingCategories = (await this.categoryService.getAllCategories()).map(
+                (cat) => cat.name,
+            )
+
+            if (category && !existingCategories.includes(category)) {
+                throw new HttpException(400, `Category ${category} doesn't exist`)
+            }
+
+            if (category) {
+                filteredProducts = products.filter((product) =>
+                    product.categories.includes(category),
+                )
+            }
+
+            return filteredProducts
+        } catch (error) {
+            logger.info(error)
+            throw new HttpException(400, 'Unable to find Products')
         }
     }
 
