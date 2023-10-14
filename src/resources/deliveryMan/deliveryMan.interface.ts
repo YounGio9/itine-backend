@@ -5,6 +5,7 @@ type DeliveryMan = Omit<z.infer<typeof createDeliveryMan.shape.body>, 'dateOfBir
     id: number
     dateOfBirth: Date
     status: 'unset' | 'accepted' | 'rejected'
+    password: string | null
 }
 
 export default DeliveryMan
