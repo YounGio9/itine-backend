@@ -7,6 +7,7 @@ import type Controller from '@utils/interfaces/controller.interface'
 import errorMiddleware from '@middleware/error.middleware'
 import cookieParser from 'cookie-parser'
 import credentials from '@middleware/credentials.middleware'
+import ws from 'ws'
 import logger from './config/logger'
 import appOrigins from './config/origins'
 
@@ -48,8 +49,21 @@ class App {
     }
 
     public listen = (): void => {
-        this.express.listen(this.port, () => {
+        const wsServer = new ws.Server({ noServer: true })
+        wsServer.on('connection', (socket) => {
+            socket.on('message', (message) => {
+                logger.info(message)
+            })
+        })
+
+        const server = this.express.listen(this.port, () => {
             logger.info(`Server listening on PORT ${this.port}`)
+        })
+
+        server.on('upgrade', (request, socket, head) => {
+            wsServer.handleUpgrade(request, socket, head, (sckt) => {
+                wsServer.emit('connection', sckt, request)
+            })
         })
     }
 }
