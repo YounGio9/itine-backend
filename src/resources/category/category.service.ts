@@ -45,7 +45,7 @@ class CategoryService {
         }
     }
 
-    public async getCategoriesByGender(gender: string): Promise<string[]> {
+    public async getCategoriesByGender(gender: string): Promise<Category[]> {
         try {
             if (!['man', 'woman', 'child'].includes(gender)) {
                 throw new HttpException(400, 'Invalid gender')
@@ -59,7 +59,11 @@ class CategoryService {
                 (temp, product: any) => Array.from(new Set(temp.concat(product.categories))),
                 [],
             )
-            return categoriesByGender
+
+            const categories = Promise.all(
+                categoriesByGender.map(async (name) => (await this.getByName(name)) as Category),
+            )
+            return await categories
         } catch (error: any) {
             logger.info(error)
             throw new HttpException(
