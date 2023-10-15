@@ -29,22 +29,12 @@ class ProductService {
 
             const imageUrls = uploadedResponses.map((response) => response.url)
 
-            const { sizes, colors, categories } = payload
+            const { categories } = payload
 
             const product = await this.product.create({
                 data: {
                     ...payload,
                     images: imageUrls,
-                    sizes: {
-                        createMany: {
-                            data: sizes.map((label) => ({ label })),
-                        },
-                    },
-                    colors: {
-                        createMany: {
-                            data: colors.map((code) => ({ code })),
-                        },
-                    },
                     categories: {
                         connectOrCreate: categories.map((name) => ({
                             create: { name },
@@ -72,8 +62,6 @@ class ProductService {
             const products = await this.product.findMany({
                 include: {
                     categories: true,
-                    colors: true,
-                    sizes: true,
                 },
             })
 
@@ -96,8 +84,6 @@ class ProductService {
                 where: { id },
                 include: {
                     categories: true,
-                    colors: true,
-                    sizes: true,
                 },
             })
             if (product) {
@@ -107,6 +93,42 @@ class ProductService {
         } catch (error) {
             logger.info(error)
             throw new Error('Cant find product')
+        }
+    }
+
+    public async updateById(
+        payload: Partial<createProductType> & { id: number },
+    ): Promise<Product | null> {
+        try {
+            const retrievedProduct = await this.getById(payload.id)
+
+            if (!retrievedProduct) {
+                throw new HttpException(404, 'Product not found')
+            }
+
+            const categories = payload.categories ?? retrievedProduct.categories
+
+            const product = await this.product.update({
+                where: { id: payload.id },
+                data: {
+                    ...payload,
+
+                    categories: {
+                        connectOrCreate: categories.map((name) => ({
+                            create: { name },
+                            where: { name },
+                        })),
+                    },
+                },
+                include: {
+                    categories: true,
+                },
+            })
+
+            return this.serializeProduct(product)
+        } catch (error: any) {
+            logger.info(error)
+            throw new HttpException(error.status ?? 400, error.message ?? 'Cant update product')
         }
     }
 
@@ -120,8 +142,6 @@ class ProductService {
                 where: { id },
                 include: {
                     categories: true,
-                    colors: true,
-                    sizes: true,
                 },
             })
             return this.serializeProduct(deleted)
@@ -173,9 +193,9 @@ class ProductService {
     public serializeProduct(product: any): Product {
         return {
             ...product,
-            categories: product.categories.map((category: any) => category.name),
-            sizes: product.sizes.map((size: any) => size.label),
-            colors: product.colors.map((color: any) => color.code),
+            categories: Array.from(
+                new Set(product.categories.map((category: any) => category.name)),
+            ),
         }
     }
 }

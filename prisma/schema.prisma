@@ -59,8 +59,8 @@ model Product {
   price             Int
   images            String[]
   categories        Category[]
-  sizes             Size[]
-  colors            Color[]
+  sizes             String[]
+  colors            String[]
   availableQuantity Int
   soldOut           Boolean
   createdAt         DateTime         @default(now())
@@ -86,17 +86,13 @@ model Category {
 }
 
 model Size {
-  id        Int     @id @default(autoincrement())
-  label     String
-  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
+  id    Int    @id @default(autoincrement())
+  label String
 }
 
 model Color {
-  id        Int     @id @default(autoincrement())
-  code      String
-  Product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
+  id   Int    @id @default(autoincrement())
+  code String
 }
 
 model City {

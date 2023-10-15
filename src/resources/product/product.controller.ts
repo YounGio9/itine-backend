@@ -4,7 +4,7 @@ import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import ProductService from './product.service'
-import { createProduct, deleteProduct, getProducts } from './product.validation'
+import { createProduct, deleteProduct, getProducts, updateProduct } from './product.validation'
 
 class ProductController implements Controller {
     public path = '/products'
@@ -17,6 +17,7 @@ class ProductController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createProduct), this.create)
         this.router.get(`${this.path}/`, zodValidator(getProducts), this.getProducts)
+        this.router.put(`${this.path}/`, zodValidator(updateProduct), this.update)
         this.router.delete(`${this.path}/:id`, zodValidator(deleteProduct), this.delete)
     }
 
@@ -73,6 +74,20 @@ class ProductController implements Controller {
                 return res.status(400).json(jsonResponse("Product doesn't exist", false))
             }
             return res.status(200).json(jsonResponse('Product successfully deleted', true, id))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    private readonly update = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const product = await this.ProductService.updateById(req.body)
+
+            return res.status(200).json(jsonResponse('Product successfully updated', true, product))
         } catch (error) {
             next(error)
         }

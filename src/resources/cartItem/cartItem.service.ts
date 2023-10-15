@@ -34,8 +34,6 @@ class CartItemService {
                     product: {
                         include: {
                             categories: true,
-                            colors: true,
-                            sizes: true,
                         },
                     },
                 },
@@ -79,8 +77,6 @@ class CartItemService {
                     product: {
                         include: {
                             categories: true,
-                            colors: true,
-                            sizes: true,
                         },
                     },
                 },
@@ -109,8 +105,6 @@ class CartItemService {
                     product: {
                         include: {
                             categories: true,
-                            colors: true,
-                            sizes: true,
                         },
                     },
                 },
@@ -133,8 +127,6 @@ class CartItemService {
                     product: {
                         include: {
                             categories: true,
-                            colors: true,
-                            sizes: true,
                         },
                     },
                 },

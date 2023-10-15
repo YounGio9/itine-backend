@@ -30,7 +30,22 @@ const getProducts = z.object({
     }),
 })
 
-const updateProduct = z.object({})
+const updateProduct = z.object({
+    body: z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        cover: z.number().optional(),
+        description: z.string().optional(),
+        price: z.number().optional(),
+        categories: z.array(z.string()).optional(),
+        sizes: z.array(z.string()).optional(),
+        colors: z.array(z.string()).optional(),
+        availableQuantity: z.number().optional(),
+        genders: z.array(z.enum(['man', 'woman', 'child'])).optional(),
+        soldOut: z.boolean().optional(),
+        cities: z.array(z.string()).optional(),
+    }),
+})
 
 type createProductType = z.infer<typeof createProduct.shape.body>
 
