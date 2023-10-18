@@ -45,7 +45,9 @@ class CategoryService {
         }
     }
 
-    public async getCategoriesByGender(gender: string): Promise<Category[]> {
+    public async getCategoriesByGender(
+        gender: string,
+    ): Promise<Array<Category & { count: number }>> {
         try {
             if (!['man', 'woman', 'child'].includes(gender)) {
                 throw new HttpException(400, 'Invalid gender')
@@ -60,10 +62,22 @@ class CategoryService {
                 [],
             )
 
-            const categories = Promise.all(
+            const categories = await Promise.all(
                 categoriesByGender.map(async (name) => (await this.getByName(name)) as Category),
             )
-            return await categories
+
+            const result = await Promise.all(
+                categories.map(async (category) => {
+                    const count = await new ProductService().filterProducts(
+                        products,
+                        gender,
+                        category.name,
+                    )
+
+                    return { ...category, count: count.length }
+                }),
+            )
+            return result
         } catch (error: any) {
             logger.info(error)
             throw new HttpException(

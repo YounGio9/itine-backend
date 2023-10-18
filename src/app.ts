@@ -8,6 +8,7 @@ import errorMiddleware from '@middleware/error.middleware'
 import cookieParser from 'cookie-parser'
 import credentials from '@middleware/credentials.middleware'
 import ws from 'ws'
+import CategoryService from '@resources/category/category.service'
 import logger from './config/logger'
 import appOrigins from './config/origins'
 
@@ -50,9 +51,18 @@ class App {
 
     public listen = (): void => {
         const wsServer = new ws.Server({ noServer: true })
-        wsServer.on('connection', (socket) => {
-            socket.on('message', (message) => {
-                logger.info(message)
+        wsServer.on('connection', (websocketConnection, connectionRequest) => {
+            websocketConnection.on('message', async (message) => {
+                let oldCategories: any[] = []
+                setInterval(async () => {
+                    const oldCatIds = oldCategories.map((cat) => cat.id)
+                    const categories = await new CategoryService().getAllCategories()
+                    categories.forEach((category) => {
+                        if (!oldCatIds.includes(category.id))
+                            websocketConnection.send(category.name)
+                    })
+                    oldCategories = categories
+                }, 1000)
             })
         })
 
