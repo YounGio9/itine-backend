@@ -50,6 +50,7 @@ class App {
     }
 
     public listen = (): void => {
+        // Testing websocket. Need to refactor this bcz the method name doesn't fit what its doing. This method should just start the server
         const wsServer = new ws.Server({ noServer: true })
         wsServer.on('connection', (websocketConnection, connectionRequest) => {
             websocketConnection.on('message', async (message) => {
