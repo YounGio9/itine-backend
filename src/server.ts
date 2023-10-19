@@ -3,14 +3,12 @@ import 'dotenv/config'
 import validateEnv from '@utils/validateEnv'
 import UserController from '@resources/user/user.controller'
 import AuthController from '@resources/auth/auth.controller'
-import SizeController from '@resources/size/size.controller'
 import CityController from '@resources/city/city.controller'
-import ColorController from '@resources/color/color.controller'
 import MessageController from '@resources/message/message.controller'
 import ProductController from '@resources/product/product.controller'
+import CartItemController from '@resources/cartItem/cartItem.controller'
 import CategoryController from '@resources/category/category.controller'
 import DeliveryManController from '@resources/deliveryMan/deliveryMan.controller'
-import CartItemController from '@resources/cartItem/cartItem.controller'
 import WishListItemController from '@resources/wishListItem/wishListItem.controller'
 import App from './app'
 
@@ -23,8 +21,6 @@ const app = new App(
         new MessageController(),
         new ProductController(),
         new CategoryController(),
-        new ColorController(),
-        new SizeController(),
         new CityController(),
         new DeliveryManController(),
         new CartItemController(),

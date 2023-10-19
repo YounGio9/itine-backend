@@ -66,7 +66,10 @@ class DeliveryManService {
             return deliveryMan
         } catch (error: any) {
             logger.info(error)
-            throw new HttpException(400, error.message ?? 'Unable to update DeliveryMan')
+            throw new HttpException(
+                error.status ?? 400,
+                error.message ?? 'Unable to update DeliveryMan',
+            )
         }
     }
 

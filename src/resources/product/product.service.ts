@@ -96,6 +96,7 @@ class ProductService {
         }
     }
 
+    // Just a working version. But the logic is not perfect. Need to be refactored
     public async updateById(
         payload: Partial<createProductType> & { id: number },
     ): Promise<Product | null> {

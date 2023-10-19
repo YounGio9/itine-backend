@@ -85,16 +85,6 @@ model Category {
   productId Int?
 }
 
-model Size {
-  id    Int    @id @default(autoincrement())
-  label String
-}
-
-model Color {
-  id   Int    @id @default(autoincrement())
-  code String
-}
-
 model City {
   id   Int    @id @default(autoincrement())
   name String @unique

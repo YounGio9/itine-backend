@@ -65,7 +65,7 @@ class AuthService {
             return newAccessToken
         } catch (err: any) {
             logger.info(err)
-            throw new HttpException(401, err.message ?? 'Something went wrong')
+            throw new HttpException(err.status ?? 401, err.message ?? 'Something went wrong')
         }
     }
 
@@ -116,7 +116,7 @@ class AuthService {
         } catch (err: any) {
             logger.info(err)
 
-            throw new HttpException(400, err.message ?? 'User login request failed')
+            throw new HttpException(err.status ?? 400, err.message ?? 'User login request failed')
         }
     }
 
