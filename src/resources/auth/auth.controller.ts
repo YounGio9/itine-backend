@@ -95,7 +95,7 @@ class AuthController implements Controller {
         try {
             const user = (await this.AuthService.getProfile(req.user as string)) as User
 
-            return res.status(200).json({ ...user, password: undefined, id: undefined })
+            return res.status(200).json({ ...user, password: undefined })
         } catch (error: any) {
             next(error)
         }
