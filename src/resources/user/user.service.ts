@@ -1,4 +1,5 @@
 import prismaClient from '@utils/prisma'
+import HttpException from '@utils/exceptions/http.exception'
 import type User from './user.interface'
 import { type createUserType } from './user.validation'
 
@@ -42,7 +43,7 @@ class UserService {
 
             return user
         } catch (error) {
-            throw new Error('Cant find user')
+            throw new HttpException(404, 'Cant find user')
         }
     }
 
@@ -51,7 +52,7 @@ class UserService {
             const user = await this.user.findUnique({ where: { email } })
             return user
         } catch (error) {
-            throw new Error('Cant find user')
+            throw new HttpException(404, 'Cant find user')
         }
     }
 
@@ -60,7 +61,7 @@ class UserService {
             const user = await this.user.findUnique({ where: { id } })
             return user
         } catch (error) {
-            throw new Error('Cant find user')
+            throw new HttpException(404, 'Cant find user')
         }
     }
 
