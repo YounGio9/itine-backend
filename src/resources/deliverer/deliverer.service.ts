@@ -1,6 +1,7 @@
 import prismaClient from '@utils/prisma'
 import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
+import { hashPassword } from '@utils/bcrypt.util'
 import type Deliverer from './deliverer.interface'
 import { type updateDelivererStatusType, type createDelivererType } from './deliverer.validation'
 
@@ -65,6 +66,28 @@ class DelivererService {
                 error.status ?? 400,
                 error.message ?? 'Unable to update Deliverer',
             )
+        }
+    }
+
+    public async updateById(
+        payload: Partial<createDelivererType> & { id: number; password?: string },
+    ): Promise<Deliverer | null> {
+        try {
+            const data = payload
+            if (data.password) {
+                data.password = await hashPassword(data.password)
+            }
+            const deliverer = await this.deliverer.update({
+                where: {
+                    id: payload.id,
+                },
+                data,
+            })
+
+            return deliverer
+        } catch (error) {
+            logger.error(error)
+            throw new Error('Cant find deliverer')
         }
     }
 

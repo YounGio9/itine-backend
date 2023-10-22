@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import verifyJwt from '@middleware/verifyJwt.middleware'
 import DelivererService from './deliverer.service'
-import { createDeliverer, updateDelivererStatus } from './deliverer.validation'
+import { createDeliverer, updateDeliverer, updateDelivererStatus } from './deliverer.validation'
 
 class DelivererController implements Controller {
     public path = '/deliverers'
@@ -23,6 +23,7 @@ class DelivererController implements Controller {
             zodValidator(updateDelivererStatus),
             this.updateStatus,
         )
+        this.router.put(`${this.path}/`, zodValidator(updateDeliverer), this.update)
     }
 
     private readonly create = async (
@@ -52,6 +53,22 @@ class DelivererController implements Controller {
             return res
                 .status(200)
                 .json(jsonResponse('Deliverers retrieved successfully', true, deliverers))
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    private readonly update = async (
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ): Promise<Response | void> => {
+        try {
+            const deliverer = await this.DelivererService.updateById(req.body)
+
+            return res
+                .status(200)
+                .json(jsonResponse('Deliverer updated successfully', true, deliverer))
         } catch (error) {
             next(error)
         }
