@@ -7,7 +7,7 @@ import WishListItemService from './wishListItem.service'
 import { createWishListItem, deleteWishListItem, getByUserId } from './wishListItem.validation'
 
 class WishListItemController implements Controller {
-    public path = '/wishListItems'
+    public path = '/wish-list-items'
     public router = Router()
     private readonly WishListItemService = new WishListItemService()
     constructor() {

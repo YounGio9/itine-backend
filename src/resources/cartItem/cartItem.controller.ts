@@ -9,7 +9,7 @@ import CartItemService from './cartItem.service'
 import { createCartItem, getCartItem, updateCartItem } from './cartItem.validation'
 
 class CartItemController implements Controller {
-    public path = '/cartItems'
+    public path = '/cart-items'
     public router = Router()
     private readonly CartItemService = new CartItemService()
     constructor() {

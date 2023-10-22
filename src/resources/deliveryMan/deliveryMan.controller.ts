@@ -8,7 +8,7 @@ import DeliveryManService from './deliveryMan.service'
 import { createDeliveryMan, updateDeliveryManStatus } from './deliveryMan.validation'
 
 class DeliveryManController implements Controller {
-    public path = '/deliveryMen'
+    public path = '/delivery-men'
     public router = Router()
     private readonly DeliveryManService = new DeliveryManService()
     constructor() {
