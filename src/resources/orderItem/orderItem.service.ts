@@ -1,0 +1,126 @@
+import prismaClient from '@utils/prisma'
+import HttpException from '@utils/exceptions/http.exception'
+import logger from '@/config/logger'
+import CityService from '@resources/city/city.service'
+import type OrderItem from './orderItem.interface'
+import { type createOrderItemType } from './orderItem.validation'
+
+class OrderItemService {
+    private readonly orderItem = prismaClient.orderItem
+    private readonly cityService = new CityService()
+    /**
+     * Create a new orderItem
+     */
+    public async create(payload: createOrderItemType): Promise<OrderItem> {
+        try {
+            const retrievedCity = await this.cityService.getByName(payload.store)
+            if (!retrievedCity) {
+                throw new HttpException(404, `City ${payload.store} doesn't exists`)
+            }
+            const orderItem = await this.orderItem.create({
+                data: {
+                    ...payload,
+                },
+            })
+
+            return orderItem
+        } catch (error: any) {
+            logger.info(error)
+            throw new HttpException(
+                error.status ?? 400,
+                error.message ?? 'Unable to create OrderItem',
+            )
+        }
+    }
+
+    /**
+     * Get all orderItems
+     */
+
+    public async getAllOrderItems(filters: {
+        userId: string
+        productId: string
+    }): Promise<OrderItem[]> {
+        try {
+            const where: any = {}
+            Object.keys(filters).forEach((key: string) => {
+                if (key) {
+                    where[key] = parseInt(filters[key as keyof typeof filters], 10)
+                }
+            })
+            const orderItems = await this.orderItem.findMany({ where })
+
+            return orderItems
+        } catch (error: any) {
+            logger.info(error)
+            throw new HttpException(400, 'Unable to find OrderItems')
+        }
+    }
+
+    /**
+     * Get all orderItems with product
+     */
+
+    public async getFullOrderItems(filters: {
+        userId: string
+        productId: string
+    }): Promise<OrderItem[]> {
+        try {
+            const where: any = {}
+            Object.keys(filters).forEach((key: string) => {
+                if (key) {
+                    where[key] = parseInt(filters[key as keyof typeof filters], 10)
+                }
+            })
+            const orderItems = await this.orderItem.findMany({ where, include: { product: true } })
+
+            return orderItems
+        } catch (error) {
+            logger.info(error)
+            throw new HttpException(400, 'Unable to find OrderItems')
+        }
+    }
+
+    /**
+     * Delete an orderItem
+     */
+
+    public async deleteById(id: number): Promise<OrderItem> {
+        try {
+            const retrievedOrderItem = await this.orderItem.findUnique({ where: { id } })
+
+            if (!retrievedOrderItem) {
+                throw new HttpException(404, "Order Item doesn't exists")
+            }
+            const deletedItem = await this.orderItem.delete({ where: { id } })
+
+            return deletedItem
+        } catch (error: any) {
+            logger.info(error)
+            throw new HttpException(error.status ?? 400, 'Unable to delete OrderItem')
+        }
+    }
+
+    /**
+     *
+     * @param id
+     * @returns {OrderItem}
+     */
+
+    public async getById(id: number): Promise<OrderItem | null> {
+        try {
+            const orderItem = await this.orderItem.findUnique({
+                where: {
+                    id,
+                },
+            })
+
+            return orderItem
+        } catch (error) {
+            logger.info(error)
+            throw new Error('Cant find orderItem')
+        }
+    }
+}
+
+export default OrderItemService
