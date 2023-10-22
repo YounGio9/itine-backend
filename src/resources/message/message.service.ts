@@ -20,7 +20,7 @@ class MessageService {
 
             return message
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to create Message')
         }
     }
@@ -35,7 +35,7 @@ class MessageService {
 
             return messages
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find Messages')
         }
     }
@@ -67,7 +67,7 @@ class MessageService {
 
             return chats
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find Messages')
         }
     }
@@ -88,7 +88,7 @@ class MessageService {
 
             return message
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find message')
         }
     }
@@ -113,7 +113,7 @@ class MessageService {
 
             return message
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant send message')
         }
     }

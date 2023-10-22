@@ -48,7 +48,7 @@ class ProductService {
 
             return fullProduct
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to create Product')
         }
     }
@@ -67,7 +67,7 @@ class ProductService {
 
             return products.map((product) => this.serializeProduct(product))
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find Products')
         }
     }
@@ -91,7 +91,7 @@ class ProductService {
             }
             return null
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find product')
         }
     }
@@ -128,7 +128,7 @@ class ProductService {
 
             return this.serializeProduct(product)
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(error.status ?? 400, error.message ?? 'Cant update product')
         }
     }
@@ -147,7 +147,7 @@ class ProductService {
             })
             return this.serializeProduct(deleted)
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant Delete product')
         }
     }
@@ -186,7 +186,7 @@ class ProductService {
 
             return filteredProducts
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(error.status ?? 400, error.message ?? 'Unable to find Products')
         }
     }

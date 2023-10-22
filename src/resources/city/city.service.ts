@@ -23,7 +23,7 @@ class CityService {
 
             return city
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(error.status ?? 400, error.message)
         }
     }
@@ -38,7 +38,7 @@ class CityService {
 
             return cities
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find Cities')
         }
     }
@@ -58,7 +58,7 @@ class CityService {
 
             return city
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find city')
         }
     }
@@ -74,7 +74,7 @@ class CityService {
 
             return city
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant update city')
         }
     }
@@ -90,7 +90,7 @@ class CityService {
             })
             return deleted
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant Delete city')
         }
     }

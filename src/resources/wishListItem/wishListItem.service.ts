@@ -32,7 +32,7 @@ class WishListItemService {
 
             return wishListItem
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(error.status ?? 400, error.message)
         }
     }
@@ -46,7 +46,7 @@ class WishListItemService {
 
             return cities
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find WishListItems')
         }
     }
@@ -71,7 +71,7 @@ class WishListItemService {
 
             return wishListItem
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(
                 error.status ?? 400,
                 error.message ?? "Can't find wishListItems",
@@ -90,7 +90,7 @@ class WishListItemService {
             })
             return deleted
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant Delete wishListItem')
         }
     }

@@ -60,7 +60,7 @@ class CartItemController implements Controller {
                 .status(200)
                 .json(jsonResponse('CartItems retrieved successfully', true, cartItems))
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             next(error)
         }
     }

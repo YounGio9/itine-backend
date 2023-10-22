@@ -29,7 +29,7 @@ class CategoryService {
 
             return category
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Unable to create Category')
         }
     }
@@ -40,7 +40,7 @@ class CategoryService {
 
             return categories
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Unable to find Categories')
         }
     }
@@ -79,7 +79,7 @@ class CategoryService {
             )
             return result
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(
                 error.status ?? 400,
                 error.message ?? 'Cant find category by gender ',
@@ -97,7 +97,7 @@ class CategoryService {
 
             return category
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find category')
         }
     }
@@ -113,7 +113,7 @@ class CategoryService {
             })
             return deleted
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant Delete category')
         }
     }
@@ -125,7 +125,7 @@ class CategoryService {
                 data,
             })
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant update category')
         }
     }

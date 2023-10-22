@@ -10,7 +10,7 @@ export default async function SendMessageByAdminMail(
 ): Promise<void> {
     readHtmlFile('./src/views/mails/messageAdmin.html', (err: any, html: any) => {
         if (err) {
-            logger.info(err)
+            logger.error(err)
 
             return err
         }
@@ -27,7 +27,7 @@ export default async function SendMessageByAdminMail(
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                logger.info(err)
+                logger.error(err)
                 return error
             }
             return {

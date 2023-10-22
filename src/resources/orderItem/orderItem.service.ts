@@ -25,7 +25,7 @@ class OrderItemService {
 
             return orderItem
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(
                 error.status ?? 400,
                 error.message ?? 'Unable to create OrderItem',
@@ -52,7 +52,7 @@ class OrderItemService {
 
             return orderItems
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find OrderItems')
         }
     }
@@ -76,7 +76,7 @@ class OrderItemService {
 
             return orderItems
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find OrderItems')
         }
     }
@@ -96,7 +96,7 @@ class OrderItemService {
 
             return deletedItem
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(error.status ?? 400, 'Unable to delete OrderItem')
         }
     }
@@ -117,7 +117,7 @@ class OrderItemService {
 
             return orderItem
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find orderItem')
         }
     }

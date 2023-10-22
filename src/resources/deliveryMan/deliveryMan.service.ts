@@ -22,7 +22,7 @@ class DeliveryManService {
 
             return deliveryMan
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to create DeliveryMan')
         }
     }
@@ -38,7 +38,7 @@ class DeliveryManService {
 
             return deliveryMans
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(400, 'Unable to find DeliveryMans')
         }
     }
@@ -65,7 +65,7 @@ class DeliveryManService {
 
             return deliveryMan
         } catch (error: any) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(
                 error.status ?? 400,
                 error.message ?? 'Unable to update DeliveryMan',
@@ -89,7 +89,7 @@ class DeliveryManService {
 
             return deliveryMan
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find deliveryMan')
         }
     }

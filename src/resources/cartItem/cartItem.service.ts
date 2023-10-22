@@ -84,7 +84,7 @@ class CartItemService {
 
             return cartItems.map((item) => this.serializeCartItem(item))
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant find cartItems')
         }
     }
@@ -133,7 +133,7 @@ class CartItemService {
             })
             return this.serializeCartItem(deleted)
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new Error('Cant Delete cartItem')
         }
     }

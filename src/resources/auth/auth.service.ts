@@ -64,7 +64,7 @@ class AuthService {
 
             return newAccessToken
         } catch (err: any) {
-            logger.info(err)
+            logger.error(err)
             throw new HttpException(err.status ?? 401, err.message ?? 'Something went wrong')
         }
     }
@@ -75,7 +75,7 @@ class AuthService {
 
             return user
         } catch (error) {
-            logger.info(error)
+            logger.error(error)
             throw new HttpException(403, 'Cant find user infos')
         }
     }
@@ -114,7 +114,7 @@ class AuthService {
 
             return { accessToken, refreshToken }
         } catch (err: any) {
-            logger.info(err)
+            logger.error(err)
 
             throw new HttpException(err.status ?? 400, err.message ?? 'User login request failed')
         }
@@ -149,7 +149,7 @@ class AuthService {
 
             return { accessToken }
         } catch (err: any) {
-            logger.info(err)
+            logger.error(err)
 
             throw new HttpException(err.status ?? 400, err.message ?? 'User login request failed')
         }
