@@ -4,23 +4,23 @@ import { Router } from 'express'
 import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import verifyJwt from '@middleware/verifyJwt.middleware'
-import DeliveryManService from './deliveryMan.service'
-import { createDeliveryMan, updateDeliveryManStatus } from './deliveryMan.validation'
+import DelivererService from './deliverer.service'
+import { createDeliverer, updateDelivererStatus } from './deliverer.validation'
 
-class DeliveryManController implements Controller {
-    public path = '/delivery-men'
+class DelivererController implements Controller {
+    public path = '/deliverers'
     public router = Router()
-    private readonly DeliveryManService = new DeliveryManService()
+    private readonly DelivererService = new DelivererService()
     constructor() {
         this.initializeRoutes()
     }
 
     private initializeRoutes(): void {
-        this.router.post(`${this.path}/`, zodValidator(createDeliveryMan), this.create)
-        this.router.get(`${this.path}/`, verifyJwt, this.getDeliveryMen)
+        this.router.post(`${this.path}/`, zodValidator(createDeliverer), this.create)
+        this.router.get(`${this.path}/`, verifyJwt, this.getDeliverers)
         this.router.post(
-            `${this.path}/changeStatus`,
-            zodValidator(updateDeliveryManStatus),
+            `${this.path}/change-status`,
+            zodValidator(updateDelivererStatus),
             this.updateStatus,
         )
     }
@@ -31,27 +31,27 @@ class DeliveryManController implements Controller {
         next: NextFunction,
     ): Promise<Response | void> => {
         try {
-            const deliveryMan = await this.DeliveryManService.create(req.body)
+            const deliverer = await this.DelivererService.create(req.body)
 
             return res
                 .status(201)
-                .json(jsonResponse('DeliveryMan created successfully', true, deliveryMan))
+                .json(jsonResponse('Deliverer created successfully', true, deliverer))
         } catch (error) {
             next(error)
         }
     }
 
-    private readonly getDeliveryMen = async (
+    private readonly getDeliverers = async (
         req: Request,
         res: Response,
         next: NextFunction,
     ): Promise<Response | void> => {
         try {
-            const deliveryMans = await this.DeliveryManService.getAllDeliveryMen()
+            const deliverers = await this.DelivererService.getAllDeliverers()
 
             return res
                 .status(200)
-                .json(jsonResponse('DeliveryMen retrieved successfully', true, deliveryMans))
+                .json(jsonResponse('Deliverers retrieved successfully', true, deliverers))
         } catch (error) {
             next(error)
         }
@@ -63,15 +63,15 @@ class DeliveryManController implements Controller {
         next: NextFunction,
     ): Promise<Response | void> => {
         try {
-            const deliveryMan = await this.DeliveryManService.updateDeliveryManStatus(req.body)
+            const deliverer = await this.DelivererService.updateDelivererStatus(req.body)
 
             return res
                 .status(200)
-                .json(jsonResponse('DeliveryMan updated successfully', true, deliveryMan))
+                .json(jsonResponse('Deliverer updated successfully', true, deliverer))
         } catch (error) {
             next(error)
         }
     }
 }
 
-export default DeliveryManController
+export default DelivererController

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const createDeliveryMan = z.object({
+const createDeliverer = z.object({
     body: z.object({
         lastName: z.string(),
         firstName: z.string(),
@@ -14,22 +14,22 @@ const createDeliveryMan = z.object({
     }),
 })
 
-const updateDeliveryManStatus = z.object({
+const updateDelivererStatus = z.object({
     body: z.object({
         id: z.number(),
         active: z.boolean(),
     }),
 })
 
-const updateDeliveryMan = z.object({})
+const updateDeliverer = z.object({})
 
-type createDeliveryManType = z.infer<typeof createDeliveryMan.shape.body>
-type updateDeliveryManStatusType = z.infer<typeof updateDeliveryManStatus.shape.body>
+type createDelivererType = z.infer<typeof createDeliverer.shape.body>
+type updateDelivererStatusType = z.infer<typeof updateDelivererStatus.shape.body>
 
 export {
-    createDeliveryMan,
-    updateDeliveryMan,
-    updateDeliveryManStatus,
-    type createDeliveryManType,
-    type updateDeliveryManStatusType,
+    createDeliverer,
+    updateDeliverer,
+    updateDelivererStatus,
+    type createDelivererType,
+    type updateDelivererStatusType,
 }

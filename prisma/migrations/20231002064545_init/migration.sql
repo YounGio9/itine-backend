@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "DeliveryMan" (
+CREATE TABLE "Deliverer" (
     "id" SERIAL NOT NULL,
     "lastName" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
@@ -12,8 +12,8 @@ CREATE TABLE "DeliveryMan" (
     "maritalStatus" TEXT NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT false,
 
-    CONSTRAINT "DeliveryMan_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Deliverer_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "DeliveryMan_email_key" ON "DeliveryMan"("email");
+CREATE UNIQUE INDEX "Deliverer_email_key" ON "Deliverer"("email");

@@ -24,6 +24,7 @@ model User {
   cart         CartItem[]
   wishList     WishListItem[]
   orders       OrderItem[]
+  Order        Order[]
 }
 
 enum RoleEnumType {
@@ -71,6 +72,7 @@ model Product {
   wishListItem      WishListItem?
   cities            String[]
   orderItems        OrderItem[]
+  orders            Order[]
 }
 
 enum GenderEnumType {
@@ -92,22 +94,23 @@ model City {
   name String @unique
 }
 
-model DeliveryMan {
-  id            Int                   @id @default(autoincrement())
+model Deliverer {
+  id            Int                 @id @default(autoincrement())
   lastName      String
   firstName     String
   dateOfBirth   DateTime
   country       String
   town          String
-  email         String                @unique
+  email         String              @unique
   phoneNumber   String
   postalCode    String
   maritalStatus MaritalStatusType
-  status        DeliveryManStatusType @default(unset)
+  status        DelivererStatusType @default(unset)
   password      String?
+  Order         Order[]
 }
 
-enum DeliveryManStatusType {
+enum DelivererStatusType {
   unset
   accepted
   rejected
@@ -137,4 +140,29 @@ model OrderItem {
   selectedSize  String
   User          User    @relation(fields: [userId], references: [id])
   userId        Int
+}
+
+model Order {
+  id                   Int         @id @default(autoincrement())
+  totalPrice           Float
+  deliveryFees         Float
+  status               OrderStatus
+  transactionReference String
+  deliveryAddress      String
+  billedAt             DateTime
+  deliveredAt          DateTime
+  createdAt            DateTime    @default(now())
+  deliverer            Deliverer   @relation(fields: [delivererId], references: [id])
+  Product              Product     @relation(fields: [productId], references: [id])
+  productId            Int
+  delivererId          Int
+  User                 User        @relation(fields: [userId], references: [id])
+  userId               Int
+}
+
+enum OrderStatus {
+  INACTIVE
+  ACTIVE
+  COMPLETED
+  CANCELLED
 }

@@ -1,14 +1,14 @@
 /*
   Warnings:
 
-  - The `status` column on the `DeliveryMan` table would be dropped and recreated. This will lead to data loss if there is data in the column.
+  - The `status` column on the `Deliverer` table would be dropped and recreated. This will lead to data loss if there is data in the column.
 
 */
 -- CreateEnum
 CREATE TYPE "GenderEnumType" AS ENUM ('woman', 'man', 'child');
 
 -- CreateEnum
-CREATE TYPE "DeliveryManStatusType" AS ENUM ('unset', 'accepted', 'rejected');
+CREATE TYPE "DelivererStatusType" AS ENUM ('unset', 'accepted', 'rejected');
 
 -- DropForeignKey
 ALTER TABLE "CartItem" DROP CONSTRAINT "CartItem_productId_fkey";
@@ -17,15 +17,15 @@ ALTER TABLE "CartItem" DROP CONSTRAINT "CartItem_productId_fkey";
 ALTER TABLE "CartItem" DROP CONSTRAINT "CartItem_userId_fkey";
 
 -- AlterTable
-ALTER TABLE "DeliveryMan" DROP COLUMN "status",
-ADD COLUMN     "status" "DeliveryManStatusType" NOT NULL DEFAULT 'unset';
+ALTER TABLE "Deliverer" DROP COLUMN "status",
+ADD COLUMN     "status" "DelivererStatusType" NOT NULL DEFAULT 'unset';
 
 -- AlterTable
 ALTER TABLE "Product" ADD COLUMN     "cities" TEXT[],
 ADD COLUMN     "gender" "GenderEnumType" NOT NULL DEFAULT 'man';
 
 -- DropEnum
-DROP TYPE "deliveryManStatusType";
+DROP TYPE "delivererStatusType";
 
 -- CreateTable
 CREATE TABLE "WishListItem" (

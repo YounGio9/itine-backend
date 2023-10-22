@@ -4,16 +4,16 @@ import { hashPassword, isValidPassword } from '@utils/bcrypt.util'
 import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
 import jwt from 'jsonwebtoken'
-import DeliveryManService from '@resources/deliveryMan/deliveryMan.service'
+import DelivererService from '@resources/deliverer/deliverer.service'
 
 class AuthService {
     private readonly UserService = new UserService()
-    private readonly DeliveryManService = new DeliveryManService()
+    private readonly DelivererService = new DelivererService()
 
     public register = async (payload: User): Promise<User> => {
         const retrievedUser = await this.UserService.getByEmail(payload.email)
-        const retrievedDeliveryMan = await this.DeliveryManService.getByEmail(payload.email)
-        if (retrievedUser != null || retrievedDeliveryMan != null) {
+        const retrievedDeliverer = await this.DelivererService.getByEmail(payload.email)
+        if (retrievedUser != null || retrievedDeliverer != null) {
             throw new HttpException(400, 'User already exists')
         }
 
@@ -130,10 +130,10 @@ class AuthService {
         try {
             const retrievedUser = await this.UserService.getByEmail(email)
 
-            const retrievedDeliveryMan = await this.DeliveryManService.getByEmail(email)
+            const retrievedDeliverer = await this.DelivererService.getByEmail(email)
 
             // eslint-disable-next-line  @typescript-eslint/prefer-nullish-coalescing
-            const user = retrievedDeliveryMan || retrievedUser
+            const user = retrievedDeliverer || retrievedUser
 
             if (user == null) {
                 throw new HttpException(401, "User doesn't exist")
