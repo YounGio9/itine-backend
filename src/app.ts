@@ -68,7 +68,7 @@ class App {
         })
 
         const server = this.express.listen(this.port, () => {
-            logger.info(`Server listening on PORT ${this.port}`)
+            logger.info(`Server listening on PORT ${this.port} 🚀`)
         })
 
         server.on('upgrade', (request, socket, head) => {
