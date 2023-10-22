@@ -13,4 +13,10 @@ const login = z.object({
     }),
 })
 
-export default login
+const getProfile = z.object({
+    params: z.object({
+        userType: z.enum(['CUSTOMER', 'DELIVERER']),
+    }),
+})
+
+export { getProfile, login }

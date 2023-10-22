@@ -5,6 +5,7 @@ import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
 import jwt from 'jsonwebtoken'
 import DelivererService from '@resources/deliverer/deliverer.service'
+import type Deliverer from '@resources/deliverer/deliverer.interface'
 
 class AuthService {
     private readonly UserService = new UserService()
@@ -69,9 +70,17 @@ class AuthService {
         }
     }
 
-    public getProfile = async (email: string): Promise<Omit<User, 'password'> | null> => {
+    public getProfile = async (
+        email: string,
+        userType: string,
+    ): Promise<Omit<User, 'password'> | Omit<Deliverer, 'password'> | null> => {
         try {
-            const user = await this.UserService.getByEmail(email)
+            let user
+            if (userType === 'CUSTOMER') {
+                user = await this.UserService.getByEmail(email)
+            } else {
+                user = await this.DelivererService.getByEmail(email)
+            }
 
             return user
         } catch (error) {
@@ -126,10 +135,9 @@ class AuthService {
     }: {
         email: string
         password: string
-    }): Promise<{ accessToken: string }> => {
+    }): Promise<{ accessToken: string; userType: string }> => {
         try {
             const retrievedUser = await this.UserService.getByEmail(email)
-
             const retrievedDeliverer = await this.DelivererService.getByEmail(email)
 
             // eslint-disable-next-line  @typescript-eslint/prefer-nullish-coalescing
@@ -142,12 +150,13 @@ class AuthService {
             if (!(await isValidPassword(password, user.password ?? ''))) {
                 throw new HttpException(403, 'Invalid password')
             }
+            const userType = retrievedDeliverer ? 'DELIVERER' : 'CUSTOMER'
 
             const accessToken = jwt.sign({ email: user.email }, process.env.ACCESS_TOKEN_SECRET!, {
                 expiresIn: '365d',
             })
 
-            return { accessToken }
+            return { accessToken, userType }
         } catch (err: any) {
             logger.error(err)
 
