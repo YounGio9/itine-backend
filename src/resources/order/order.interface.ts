@@ -4,7 +4,10 @@ import type Product from '@resources/product/product.interface'
 import type User from '@resources/user/user.interface'
 import type { createOrder } from './order.validation'
 
-type Order = Omit<z.infer<typeof createOrder.shape.body>, 'billedAt' | 'deliveredAt'> & {
+type Order = Omit<
+    z.infer<typeof createOrder.shape.body>,
+    'billedAt' | 'deliveredAt' | 'deliveryAddress'
+> & {
     id: number
     deliverer?: Deliverer
     Product?: Product

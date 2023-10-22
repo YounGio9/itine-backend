@@ -6,41 +6,52 @@ import { type createOrderType } from './order.validation'
 
 class OrderService {
     private readonly order = prismaClient.order
+    private readonly address = prismaClient.address
     /**
      * Create a new order
      */
     public async create(payload: createOrderType): Promise<Order> {
         try {
-            const order = await this.order.create({
+            const orderPayload = JSON.parse(JSON.stringify(payload))
+            delete orderPayload.deliveryAddress
+            const address = await this.address.create({
                 data: {
-                    ...payload,
+                    ...payload.deliveryAddress,
+                    Order: {
+                        create: {
+                            ...orderPayload,
+                        },
+                    },
+                },
+                include: {
+                    Order: true,
                 },
             })
 
-            return order
+            return address.Order[0]
         } catch (error) {
             logger.error(error)
             throw new HttpException(400, 'Unable to create Order')
         }
     }
 
-    public async update(payload: Partial<createOrderType> & { id: number }): Promise<Order> {
-        try {
-            const order = await this.order.update({
-                where: {
-                    id: payload.id,
-                },
-                data: {
-                    ...payload,
-                },
-            })
+    // public async update(payload: Partial<createOrderType> & { id: number }): Promise<Order> {
+    //     try {
+    //         const order = await this.order.update({
+    //             where: {
+    //                 id: payload.id,
+    //             },
+    //             data: {
+    //                 ...payload,
+    //             },
+    //         })
 
-            return order
-        } catch (error) {
-            logger.error(error)
-            throw new HttpException(400, 'Unable to create Order')
-        }
-    }
+    //         return order
+    //     } catch (error) {
+    //         logger.error(error)
+    //         throw new HttpException(400, 'Unable to create Order')
+    //     }
+    // }
 
     /**
      * Get all orders

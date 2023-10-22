@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from 'express'
 import jsonResponse from '@utils/jsonResponse'
 import verifyJwt from '@middleware/verifyJwt.middleware'
 import OrderService from './order.service'
-import { createOrder, getOrders, updateOrder } from './order.validation'
+import { createOrder, getOrders } from './order.validation'
 
 class OrderController implements Controller {
     public path = '/orders'
@@ -18,7 +18,7 @@ class OrderController implements Controller {
     private initializeRoutes(): void {
         this.router.post(`${this.path}/`, zodValidator(createOrder), this.create)
         this.router.get(`${this.path}/`, zodValidator(getOrders), verifyJwt, this.getOrders)
-        this.router.put(`${this.path}/`, zodValidator(updateOrder), verifyJwt, this.update)
+        // this.router.put(`${this.path}/`, zodValidator(updateOrder), verifyJwt, this.update)
     }
 
     private readonly create = async (
@@ -35,19 +35,19 @@ class OrderController implements Controller {
         }
     }
 
-    private readonly update = async (
-        req: Request,
-        res: Response,
-        next: NextFunction,
-    ): Promise<Response | void> => {
-        try {
-            const order = await this.OrderService.update(req.body)
+    // private readonly update = async (
+    //     req: Request,
+    //     res: Response,
+    //     next: NextFunction,
+    // ): Promise<Response | void> => {
+    //     try {
+    //         const order = await this.OrderService.update(req.body)
 
-            return res.status(201).json(jsonResponse('Order created successfully', true, order))
-        } catch (error) {
-            next(error)
-        }
-    }
+    //         return res.status(201).json(jsonResponse('Order created successfully', true, order))
+    //     } catch (error) {
+    //         next(error)
+    //     }
+    // }
 
     private readonly getOrders = async (
         req: Request,
