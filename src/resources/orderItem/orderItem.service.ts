@@ -6,6 +6,8 @@ import UserService from '@resources/user/user.service'
 import ProductService from '@resources/product/product.service'
 import type OrderItem from './orderItem.interface'
 import { type createOrderItemType } from './orderItem.validation'
+import UserService from '@resources/user/user.service'
+import ProductService from '@resources/product/product.service'
 
 class OrderItemService {
     private readonly orderItem = prismaClient.orderItem
