@@ -2,20 +2,33 @@ import prismaClient from '@utils/prisma'
 import HttpException from '@utils/exceptions/http.exception'
 import logger from '@/config/logger'
 import CityService from '@resources/city/city.service'
+import UserService from '@resources/user/user.service'
+import ProductService from '@resources/product/product.service'
 import type OrderItem from './orderItem.interface'
 import { type createOrderItemType } from './orderItem.validation'
 
 class OrderItemService {
     private readonly orderItem = prismaClient.orderItem
     private readonly cityService = new CityService()
+    private readonly userService = new UserService()
+    private readonly productService = new ProductService()
+
     /**
      * Create a new orderItem
      */
     public async create(payload: createOrderItemType): Promise<OrderItem> {
         try {
             const retrievedCity = await this.cityService.getByName(payload.store)
+            const retrievedUser = await this.userService.getById(payload.userId)
+            const retrievedProduct = await this.productService.getById(payload.productId)
             if (!retrievedCity) {
                 throw new HttpException(404, `City ${payload.store} doesn't exists`)
+            }
+            if (!retrievedUser) {
+                throw new HttpException(404, `User doesn't exists`)
+            }
+            if (!retrievedProduct) {
+                throw new HttpException(404, `Product doesn't exists`)
             }
             const orderItem = await this.orderItem.create({
                 data: {
