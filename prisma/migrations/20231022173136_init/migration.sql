@@ -1,38 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Deliverer` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- CreateEnum
-CREATE TYPE "DelivererStatusType" AS ENUM ('unset', 'accepted', 'rejected');
-
 -- CreateEnum
 CREATE TYPE "OrderStatus" AS ENUM ('INACTIVE', 'ACTIVE', 'COMPLETED', 'CANCELLED');
-
--- DropTable
-DROP TABLE "Deliverer";
-
--- DropEnum
-DROP TYPE "DelivererStatusType";
-
--- CreateTable
-CREATE TABLE "Deliverer" (
-    "id" SERIAL NOT NULL,
-    "lastName" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "dateOfBirth" TIMESTAMP(3) NOT NULL,
-    "country" TEXT NOT NULL,
-    "town" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "phoneNumber" TEXT NOT NULL,
-    "postalCode" TEXT NOT NULL,
-    "maritalStatus" "MaritalStatusType" NOT NULL,
-    "status" "DelivererStatusType" NOT NULL DEFAULT 'unset',
-    "password" TEXT,
-
-    CONSTRAINT "Deliverer_pkey" PRIMARY KEY ("id")
-);
 
 -- CreateTable
 CREATE TABLE "Order" (
@@ -41,19 +8,30 @@ CREATE TABLE "Order" (
     "deliveryFees" DOUBLE PRECISION NOT NULL,
     "status" "OrderStatus" NOT NULL,
     "transactionReference" TEXT NOT NULL,
-    "deliveryAddress" TEXT NOT NULL,
     "billedAt" TIMESTAMP(3) NOT NULL,
     "deliveredAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "productId" INTEGER NOT NULL,
     "delivererId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
+    "addressId" INTEGER NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
-CREATE UNIQUE INDEX "Deliverer_email_key" ON "Deliverer"("email");
+-- CreateTable
+CREATE TABLE "Address" (
+    "id" SERIAL NOT NULL,
+    "fullName" TEXT NOT NULL,
+    "postalCode" TEXT NOT NULL,
+    "stree" TEXT NOT NULL,
+    "other" TEXT NOT NULL,
+
+    CONSTRAINT "Address_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_addressId_fkey" FOREIGN KEY ("addressId") REFERENCES "Address"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_delivererId_fkey" FOREIGN KEY ("delivererId") REFERENCES "Deliverer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

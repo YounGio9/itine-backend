@@ -51,11 +51,15 @@ class AuthController implements Controller {
         try {
             const mobileKey = req.headers['mobile-api-key']
             if (mobileKey && mobileKey === process.env.MOBILE_API_KEY) {
-                const { accessToken, userType } = await this.AuthService.loginMobile(req.body)
+                const { accessToken, userType, user } = await this.AuthService.loginMobile(req.body)
 
-                return res
-                    .status(200)
-                    .json(jsonResponse('User logged successfully', true, { accessToken, userType }))
+                return res.status(200).json(
+                    jsonResponse('User logged successfully', true, {
+                        accessToken,
+                        user,
+                        userType,
+                    }),
+                )
             }
             const { accessToken, refreshToken } = await this.AuthService.login(req.body)
 

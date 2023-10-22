@@ -135,7 +135,7 @@ class AuthService {
     }: {
         email: string
         password: string
-    }): Promise<{ accessToken: string; userType: string }> => {
+    }): Promise<{ accessToken: string; userType: string; user: User | Deliverer }> => {
         try {
             const retrievedUser = await this.UserService.getByEmail(email)
             const retrievedDeliverer = await this.DelivererService.getByEmail(email)
@@ -156,7 +156,7 @@ class AuthService {
                 expiresIn: '365d',
             })
 
-            return { accessToken, userType }
+            return { accessToken, userType, user }
         } catch (err: any) {
             logger.error(err)
 

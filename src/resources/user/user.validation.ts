@@ -14,7 +14,7 @@ const createUser = z.object({
             ),
         country: z.string(),
         town: z.string(),
-        phoneNumber: z.number().min(6, 'Please enter a valid phone Number'),
+        phoneNumber: z.string().min(6, 'Please enter a valid phone Number'),
     }),
 })
 

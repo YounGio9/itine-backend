@@ -18,7 +18,7 @@ model User {
   password     String
   country      String         @db.VarChar(255)
   town         String         @db.VarChar(255)
-  phoneNumber  Int            @db.Integer
+  phoneNumber  String         @db.VarChar(255)
   role         RoleEnumType   @default(user)
   refreshToken String?        @unique @db.VarChar(255)
   cart         CartItem[]
@@ -148,7 +148,7 @@ model Order {
   deliveryFees         Float
   status               OrderStatus
   transactionReference String
-  deliveryAddress      String
+  deliveryAddress      Address     @relation(fields: [addressId], references: [id])
   billedAt             DateTime
   deliveredAt          DateTime
   createdAt            DateTime    @default(now())
@@ -158,6 +158,16 @@ model Order {
   delivererId          Int
   User                 User        @relation(fields: [userId], references: [id])
   userId               Int
+  addressId            Int
+}
+
+model Address {
+  id         Int     @id @default(autoincrement())
+  fullName   String
+  postalCode String
+  street     String
+  other      String
+  Order      Order[]
 }
 
 enum OrderStatus {
